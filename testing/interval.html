@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interval Async</title>
+</head>
+<body>
+
+    <button onclick="syncronize('a',3)">Start Interval</button>
+    <button class="red" onclick="stopSynchronize('a')">Stop Interval</button>
+
+    <button onclick="syncronize('b',2)">Start Interval</button>
+    <button class="red" onclick="stopSynchronize('b')">Stop Interval</button>
+
+    <style>
+        *{
+            margin: 0 0;
+            padding: 0 0;
+            font-family: Avenir Next;
+        }
+
+        button {
+            padding: 1em 2em;
+            color: white;
+            background: #70d7d7;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 2em;
+        }
+
+        .red{
+            background: #e35252;
+        }
+
+        body{
+            height: 100vh;
+            width: 100vw;
+            display: grid;
+            place-items: center;
+        }
+    </style>
+
+    <script>
+
+        let intervalLoops = {};
+
+        function syncronize(x, time){
+            intervalLoops[x] = setInterval(() => {
+                console.log(`Syncing (${x})...`);
+            }, time * 1000);
+        }
+
+        function stopSynchronize(x){
+            if(intervalLoops[x]) clearTimeout(intervalLoops[x]);
+        }
+
+        if(JSON.stringify(intervalLoops) === '{}') console.log("hello");
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self Report</title>
+
+    <link rel="stylesheet" href="../css/report.css">
+</head>
+<body>
+
+    <div class="container container-self">
+        <span class="report-id-field">
+            <span class="justify-end">Report ID: <b>${this.reportID}</b></span>
+        </span>
+        <h1 class="title">${this.reportTitle}</h1>
+        <div class="form-wrapper">
+            <form class="form-self">
+                <img src="../images/health-shield.png" class="background-image" alt="">
+    
+                <div class="inner-container">
+                    <span class="inner-title">Personal Information</span>
+                    <span class="field-container span-two">
+                        <span class="field-title">Name of Patient</span>
+                        <span class="input-field">${this.patientName}</span>
+                    </span>
+    
+                    <span class="field-container">
+                        <span class="field-title">Date of Birth</span>
+                        <span class="input-field">${this.dateOfBirth}</span>
+                    </span>
+    
+                    <span class="field-container">
+                        <span class="field-title">Gender</span>
+                        <span class="input-field">${this.gender}</span>
+                    </span>
+    
+                    <span class="field-container span-two">
+                        <span class="field-title">Email</span>
+                        <span class="input-field">${this.patientEmail}</span>
+                    </span>
+    
+                    <span class="field-container span-two">
+                        <span class="field-title">Phone Contact</span>
+                        <span class="input-field">${this.patientContact}</span>
+                    </span>
+                </div>
+    
+                <div class="inner-container flat-grid">
+                    <span class="inner-title">Health Vitals</span>
+                    <span class="field-container span-one">
+                        <span class="field-title">Current Temperature</span>
+                        <span class="input-field">${this.temperature}</span>
+                    </span>
+    
+                    <span class="field-container span-one">
+                        <span class="field-title">Blood Group</span>
+                        <span class="input-field">${this.bloodGroup}</span>
+                    </span>
+    
+                    <span class="field-container span-one">
+                        <span class="field-title">Heart Rate</span>
+                        <span class="input-field">${this.heartRate}</span>
+                    </span>
+    
+                    <span class="field-container span-one">
+                        <span class="field-title">SBP</span>
+                        <span class="input-field">${this.SBP}</span>
+                    </span>
+    
+                    <span class="field-container span-one">
+                        <span class="field-title">DBP</span>
+                        <span class="input-field">${this.DBP}</span>
+                    </span>
+                </div>
+    
+                <span class="report-id-field twin-right" id="generated-date">
+                    <span>Generated Time: <b>${this.generatedTime}</b></span>
+                    <span>Generated Date: <b>${this.generatedDate}</b></span>
+                </span>
+            </form>
+        </div>
+    </div>
+
+    <style>
+
+        *{
+            margin: 0 0;
+            padding:  0 0;
+        }
+
+        body{
+            display: grid;
+            padding: 100px 0px;
+            justify-items: center;
+        }
+
+        .container-self{
+            border: 1px solid blue;
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+        }
+
+        .form-wrapper{
+            position: relative;
+        }
+
+        .form-self {
+            height: 100%;
+            grid-template-rows: auto auto 1fr;
+        }
+
+        .flat-grid{ grid-template-columns: 1fr; }
+
+        .twin-right{
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-gap: 50px;
+            place-self: end;
+        }
+    </style>
+    
+</body>
+</html>
