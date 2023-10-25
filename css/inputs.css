@@ -88,10 +88,11 @@
 
 .form-input:disabled{
     background: #f0f0f0;
-    border-color: transparent;
+    border-color: #c0c0c0;
     cursor: default;
     color: #c0c0c0;
-}.form-input:disabled::placeholder{ color: #c0c0c0; }
+}
+.form-input:disabled::placeholder{ color: #c0c0c0; }
 
 .disabled-view{
     border: 1px solid #c0c0c0;
@@ -199,3 +200,11 @@
 .place-center{ place-self: center;}
 .place-end{ place-self: end;}
 
+
+
+
+.grid-two-columns{
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 1fr;
+}

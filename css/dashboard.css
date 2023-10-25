@@ -142,7 +142,7 @@ body{
 .top-navigation{
     padding: 30px 40px;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 1fr auto;
     grid-gap: 20px;
     box-sizing: border-box;
     width: 99%;
@@ -207,15 +207,11 @@ body{
     position: absolute;
     background-color: var(--pale-background);
     border-radius: 10px;
-    
-    /* height: 300px;
-    width: 100px; */
-
     top: calc(100% + 20px);
     right: 0px;
-
     display: none;
-    /* cursor: pointer; */
+
+    z-index: 2;
 }
 
 .dropdown-menu::before{
@@ -280,6 +276,8 @@ body{
     margin-right: 10px;
     grid-gap: 5px;
     cursor: pointer;
+
+    margin-bottom: 10px;
 }
 
 .row-length-button:last-child { margin-right: 0px; }

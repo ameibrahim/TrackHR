@@ -1,7 +1,7 @@
 .popup{
     position: relative;
     box-shadow: var(--boxshadowD);
-    padding: 30px;
+    /* padding: 30px; */
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr;
@@ -63,11 +63,11 @@
 }
 
 .pop-up-title{
-    font-size: 1.8em;
-    color: var(--accent);
+    font-size: 1.3em;
+    color: black;
     font-weight: 400;
     justify-self: start;
-    margin-bottom: 20px;
+    padding: 0.2em 0em;
 }
 
 .overlay.report-review-overlay{
@@ -91,6 +91,7 @@
 }
 
 .popup-header, .popup-body, .popup-footer{
+    position: relative;
     padding: 1em 2em;
     margin: 0px;
     border-bottom: 1.5px solid #ecebeb;
@@ -101,7 +102,7 @@
     box-sizing: border-box;
 }
 
-.popup-body { padding: 2em;}
+.popup-body { border-bottom: none; padding: 2em; }
 
 .popup-footer { 
     border-bottom: none;
@@ -123,7 +124,6 @@
     width: 25px;
     display: grid;
     place-items: center;
-    top: 1em;
     right: 1em;
     cursor: pointer;
     transition: 0.3s all;
