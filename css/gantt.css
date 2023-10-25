@@ -33,7 +33,7 @@ body {
     /* border: 1px solid red; */
 }
 
-.gantt-row{ width: auto; position: relative; margin-bottom: 10px; cursor: pointer; }
+.gantt-row{ width: auto; position: relative; margin-bottom: 20px; cursor: pointer; }
 .gantt-row:last-child { margin-bottom: 0px; }
 
 .fifty{
@@ -43,14 +43,14 @@ body {
 }
 
 .gantt-bar{
-    --bar-color: #1E5AD9;
+    --bar-color: var(--blue);
     position: relative;
     width: 100%;
-    background: rgb(255, 255, 255);
-    box-shadow: var(--boxshadowC);
-    border: 2px solid var(--bar-color);
+    background: white;
+    /* box-shadow: var(--boxshadowA); */
+    border: 1px solid var(--bar-color);
     border-radius: 5px;
-    height: 40px;
+    height: 35px;
     font-weight: 600;
     font-size: 0.7em;
     letter-spacing: 1px;
@@ -68,9 +68,9 @@ body {
 
 .gantt-bar > .progress {
     position: absolute;
-    height: 3px;
+    height: 2px;
     width: 10%;
-    background: red;
+    background: var(--blue-gradient);
     bottom: -2px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
@@ -81,35 +81,58 @@ body {
     position: absolute;
     height: 10px;
     width: 10px;
-    background: inherit;
+    background: var(--blue);
     border-radius: 50%;
     top: -4px;
     left: calc(100% - 5px);
 }
 
-.gantt-row[data-complete="true"] > .gantt-bar > .badge{ background: var(--approved); }
-.gantt-row[data-complete="true"] > .gantt-bar > .progress{ height: 0px; background: var(--approved) ;}
+.gantt-row[data-complete="true"] > .gantt-bar > .badge{ --bar-color: var(--approved); }
+.gantt-row[data-complete="true"] > .gantt-bar > .progress{ height: 0px;  --bar-color: var(--approved) ;}
 .gantt-row[data-complete="true"] > .gantt-bar > .progress::after {
     content: "";
     position: absolute;
     height: 20px;
     width: 20px;
-    background-color: inherit;
+    background-color: var(--bar-color);
     background-image: url(../images/check.png);
-    background-size: 10px;
+    background-size: 8px;
     background-repeat: no-repeat;
     border-radius: 50%;
-    top: -11px;
-    left: calc(100% - 11px);
+    top: -13px;
+    left: calc(100% - 13px);
 
     background-position: center center;
+    box-sizing: content-box;
+    border: 3px solid white;
+} 
+
+.gantt-row[data-complete="overdeadline"] > .gantt-bar { --bar-color: var(--error);}
+.gantt-row[data-complete="overdeadline"] > .gantt-bar > .badge{ background: var(--error); }
+.gantt-row[data-complete="overdeadline"] > .gantt-bar > .progress{ height: 0px; width: 100% !important; background: var(--error) ;}
+.gantt-row[data-complete="overdeadline"] > .gantt-bar > .progress::after {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background-color: inherit;
+    background-image: url(../images/close.png);
+    background-size: 8px;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    top: -13px;
+    left: calc(100% - 13px);
+
+    background-position: center center;
+    box-sizing: content-box;
+    border: 3px solid white;
 } 
 
 .gantt-bar > .badge {
     position: absolute;
     height: 20px;
     width: 20px;
-    background: red;
+    background: var(--bar-color);
     color: white;
     font-size: 10px;
     border-radius: 50%;

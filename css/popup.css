@@ -1,14 +1,16 @@
 .popup{
     position: relative;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-    padding: 50px;
+    box-shadow: var(--boxshadowD);
+    padding: 30px;
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr;
     place-items: center;
     box-sizing: border-box;
     border-radius: 20px;
-    background: white;
+    background: var(--pale-background);
+    min-width: 250px;
+    min-width: 450px;
 }
 
 .overlay{
@@ -61,10 +63,11 @@
 }
 
 .pop-up-title{
-    font-size: 2em;
-    color: #E8893A;
+    font-size: 1.8em;
+    color: var(--accent);
     font-weight: 400;
-    text-align: center;
+    justify-self: start;
+    margin-bottom: 20px;
 }
 
 .overlay.report-review-overlay{
@@ -114,18 +117,25 @@
 
 .close-button{
     position: absolute;
-    background: #0E0E0E;
+    background: black;
     border-radius: 50%;
-    height: 26px;
-    width: 26px;
+    height: 25px;
+    width: 25px;
     display: grid;
     place-items: center;
+    top: 1em;
     right: 1em;
     cursor: pointer;
+    transition: 0.3s all;
 }
 
+.close-button:hover { transform: scale(1.15); }
+
+.close-button:hover > img { height: 15px; }
 .close-button > img {
-    height: 8px;
+    height: 20px;
+    filter: invert(100%);
+    transition: 0.3s all;
 }
 
 .permission-item-add{

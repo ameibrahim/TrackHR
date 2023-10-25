@@ -6,5 +6,29 @@
     --boxshadowE: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
 
-    --approved: #1ED96B;
+    /* --accent: #1E5AD9; */
+    --accent: #42952F;
+    --approved: #42952F;
+    --error: #FC6D64;
+    --gray: #959393;
+    --light-gray: #E6E8E8;
+
+    --pale-background: #F9F9F5;
+
+    --orange: #F9A05F;
+    --orange: #FC6D64;
+    --orange-gradient: linear-gradient(255deg, #FC6D64, #fbd6b4, transparent);
+
+
+    --blue: #297CF6;
+    --blue-gradient: linear-gradient(255deg, #297CF6, #95BCF6, transparent);
+}
+
+* {
+    font-family: "Averta";
+}
+
+.icon{
+    height: 11px;
+    filter: invert(41%) sepia(98%) saturate(368%) hue-rotate(63deg) brightness(97%) contrast(84%);
 }

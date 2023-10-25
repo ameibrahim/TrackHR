@@ -91,7 +91,7 @@ let data = [
         deadline: "12:30",
         childrenTasks: "1",
         progress: "10%",
-        complete: "false",
+        complete: "overdeadline",
     }, 
 
     {
