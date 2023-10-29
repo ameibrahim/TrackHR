@@ -15,7 +15,7 @@
 
 .overlay{
     position: fixed;
-    background: #00000080;
+    background: #000000D0;
     height: 100vh;
     width: 100%;
     box-sizing: border-box;
@@ -268,4 +268,67 @@
 
 .pdf-viewer-loader > .sk-chase{
     --sk-size: 40px;
+}
+
+
+/* NEW STYLES */
+
+.collaborators-slide-popup{
+    position: absolute;
+    top: 100%;
+    height: 70%;
+    z-index: 10;
+    align-items: start;
+    transition: 0.5s;
+    grid-template-rows: auto 1fr;
+}
+
+.collaborators-slide-popup > .popup-body {
+    padding: 0em 0em;
+    /* border: 1px solid red; */
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.collaborator-list {
+    display: block;
+    /* border: 1px solid blue; */
+    position: relative;
+    width: 100%;
+    height: 100%;
+    list-style: none;
+    overflow: scroll;
+    align-items: start;
+}
+
+.collaborator-row {
+    display: grid;
+    padding: 1em 1em 1em 2em;
+    grid-template-columns: 1fr auto;
+    border-bottom: 1px solid var(--dark-accent);
+}
+/* .collaborator-row:last-child{ border-bottom: none; } */
+
+.collaborator-row > p {
+    border-radius: 10px;
+}
+
+.collaborator-row > span {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    transition: 0.3s;
+    background: var(--light-gray);
+}
+.collaborator-row > span:hover{
+    cursor: pointer;
+    transform: scale(0.90);
+    background-color: var(--error);
+}
+
+.collaborator-row > span > img{
+    height: 20px;
 }

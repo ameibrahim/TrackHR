@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/root.css">
     <link rel="stylesheet" href="css/popup.css">
     <link rel="stylesheet" href="css/inputs.css">
+
+    <script src="js/index.js" defer></script>
 </head>
 <body>
 
@@ -30,54 +32,33 @@
         }
     </style>
 
-    <div class="overlay">
+    <div class="overlay task-overlay">
         <div class="popup">
             <div class="popup-header">
-                <h1 class="pop-up-title">Add A Subtask</h1>
-                <div class="close-button">
+                <div class="close-button" onclick="hideAddTaskForm()">
                     <img src="icons/fi-rr-cross-small.svg" alt="">
                 </div>
+                <h1 class="pop-up-title">Add A Project</h1> 
             </div>
-    
+
+
             <div class="popup-body">
                 <form class="task-form">
-    
                     <div class="form-input-container user-search-container">
-                        <span class="form-input-label">Match to parent task</span>
-                        <input class="form-input" placeholder="Parent Task" type="text" required>
-                        <!-- <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span> -->
-                        <!-- <div class="search-list-of-users">
-                        </div> -->
-                    </div>
-        <!-- 
-                    <div class="grid-two-columns">
-        
-                        <div class="form-input-container">
-                            <span class="form-input-label">start date</span>
-                            <input class="form-input patient-date-of-test" placeholder="start date" type="date" required disabled>
-                        </div>
-        
-                        <div class="form-input-container">
-                            <span class="form-input-label">Deadline</span>
-                            <input class="form-input patient-date-of-test" placeholder="end date" type="date" required>
-                        </div>
-                    </div> -->
-        
-                    <div class="form-input-container user-search-container">
-                        <span class="form-input-label">Task Name</span>
-                        <input class="form-input" placeholder="Task Name" type="text" required>
+                        <span class="form-input-label">Project Name</span>
+                        <input class="form-input" placeholder="Project Name" type="text" required>
                         <!-- <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span> -->
                         <!-- <div class="search-list-of-users">
                         </div> -->
                     </div>
                 
                     <div class="grid-two-columns">
-        
+    
                         <div class="form-input-container">
                             <span class="form-input-label">start date</span>
                             <input class="form-input patient-date-of-test" placeholder="start date" type="date" required>
                         </div>
-        
+    
                         <div class="form-input-container">
                             <span class="form-input-label">Deadline</span>
                             <input class="form-input patient-date-of-test" placeholder="end date" type="date" required>
@@ -86,7 +67,12 @@
                 
                     <div class="form-input-container">
                         <span class="form-input-label">Add Collaborators</span>
-                        <input class="form-input patient-type-of-test" placeholder="Type a collaborator name" type="text">
+                        <div class="in-type-input">
+                            <input class="form-input patient-type-of-test" placeholder="Type a collaborator name" type="text">
+                            <div class="input-side-tag" onclick="slideCollaboratorPopupUp()">
+                                <span class="circular-badge">9</span>
+                            </div>
+                        </div>
                     </div>
                 
                     <div class="form-input-container span-three">
@@ -105,6 +91,54 @@
                         <div class="sk-bounce-dot"></div>
                     </div>
                 </form>
+
+                <div class="popup collaborators-slide-popup">
+                    <div class="popup-header">
+                        <div class="close-button" onclick="slideCollaboratorPopupDown()">
+                            <img src="icons/fi-rr-cross-small.svg" alt="">
+                        </div>
+                        <h1 class="pop-up-title">Collaborators ( 5 )</h1> 
+                    </div>
+
+                    <div class="popup-body">
+                        <ul class="collaborator-list">
+                            <li class="collaborator-row">
+                                <p>Abdulmunim</p>
+                                <span>
+                                    <img src="icons/fi-rr-cross-small.svg" alt="">   
+                                </span>
+                            </li>
+
+                            <li class="collaborator-row">
+                                <p>Mahmoud</p>
+                                <span>
+                                    <img src="icons/fi-rr-cross-small.svg" alt="">   
+                                </span>
+                            </li>
+
+                            <li class="collaborator-row">
+                                <p>Teyei</p>
+                                <span>
+                                    <img src="icons/fi-rr-cross-small.svg" alt="">   
+                                </span>
+                            </li>
+
+                            <li class="collaborator-row">
+                                <p>Ibrahim</p>
+                                <span>
+                                    <img src="icons/fi-rr-cross-small.svg" alt="">   
+                                </span>
+                            </li>
+
+                            <li class="collaborator-row">
+                                <p>Johnny</p>
+                                <span>
+                                    <img src="icons/fi-rr-cross-small.svg" alt="">   
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

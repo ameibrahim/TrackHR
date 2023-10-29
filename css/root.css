@@ -1,3 +1,15 @@
+*,
+*::after,
+*::before{
+    padding: 0 0;
+    margin: 0 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
 :root{
     --boxshadowA: rgba(0, 0, 0, 0.04) 0px 3px 5px;
     --boxshadowB: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
