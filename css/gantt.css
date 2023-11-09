@@ -17,19 +17,6 @@ body > * {
     font-family: Avenir Next;
 }
 
-/* 
-body {
-    height: 100vh;
-    width: 100vw;
-    display: grid;
-    justify-items: center;
-    padding: 50px;
-} */
-
-.center-content.gantt-center-content{
-    padding-top: 20px;
-}
-
 .gantt-container{
     width: 100%;
     /* display: grid; */

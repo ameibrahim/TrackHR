@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gantt</title>
-    <link rel="stylesheet" href="css/font.css">
-    <link rel="stylesheet" href="css/root.css">
-    <link rel="stylesheet" href="css/dashboard.css?2">
-    <link rel="stylesheet" href="css/popup.css">
-    <link rel="stylesheet" href="css/inputs.css">
-    <link rel="stylesheet" href="css/max-view.css?3">
+    <?php include 'components/major-css-imports.php'; ?>
 
+    <link rel="stylesheet" href="css/max-view.css?3">
     <link rel="stylesheet" href="css/gantt.css">
     <!-- <link rel="stylesheet" href="css/grid-table.css"> -->
 
@@ -21,8 +17,6 @@
 <body>
 
     <?php include 'components/side-navigation.php'; ?>
-
-
 
     <div class="main-container">
 
@@ -37,9 +31,7 @@
                 </div>
             </div>
 
-            <ul class="gantt-container">
-
-            </ul> 
+            <ul class="gantt-container"></ul> 
         </div>
     </div>
 

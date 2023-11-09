@@ -94,7 +94,7 @@
     position: relative;
     padding: 1em 2em;
     margin: 0px;
-    border-bottom: 1.5px solid #ecebeb;
+    border-bottom: 1px solid var(--accent);
     width: 100%;
     display: grid;
     place-items: center;
