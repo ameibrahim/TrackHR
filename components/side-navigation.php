@@ -11,31 +11,31 @@
     <div class="sidenav-row-container">
         <h2 class="navigation-row-title">Home</h2>
     
-        <a href="dashboard.html" class="navigation-row">
+        <a href="dashboard.php" class="navigation-row">
             <span class="selected"></span>
             <img src="images/icons/fi-rr-home.svg" alt="" class="row-icon">
             <p class="navigation-row-name">Dashboard</p>
         </a>
 
-        <a href="managers.html" class="navigation-row">
+        <a href="managers.php" class="navigation-row">
             <span class="selected"></span>
             <img src="images/icons/fi-rr-people-arrows-left-right.svg" alt="" class="row-icon">
             <p class="navigation-row-name">Managers</p>
         </a>
 
-        <div class="navigation-row">
+        <a href="supervisors.php" class="navigation-row">
             <span class="selected"></span>
             <img src="images/icons/fi-rr-people-poll.svg" alt="" class="row-icon">
             <p class="navigation-row-name">Supervisors</p>
-        </div>
+        </a>
 
-        <div class="navigation-row">
+        <a href="workers.php" class="navigation-row">
             <span class="selected"></span>
             <img src="images/icons/fi-rr-people-carry-box.svg" alt="" class="row-icon">
             <p class="navigation-row-name">Workers</p>
-        </div>
+        </a>
 
-        <a href="task-gantt.html" class="navigation-row">
+        <a href="task-gantt.php" class="navigation-row">
             <span class="selected"></span>
             <img src="images/icons/fi-rr-chart-bullet.svg" alt="" class="row-icon">
             <p class="navigation-row-name">Gantt View</p>
@@ -45,6 +45,7 @@
     <div class="sidenav-row-container">
         <h2 class="navigation-row-title">Projects</h2>
     
+        <!-- These elements need to be dynamically generated -->
         <div class="navigation-row">
             <span class="selected"></span>
             <img src="images/icons/fi-rr-bullseye-arrow.svg" alt="" class="row-icon">

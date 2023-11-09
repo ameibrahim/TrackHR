@@ -8,6 +8,10 @@ body{
     overflow: hidden;
 }
 
+.header-title{
+    color: var(--accent);
+}
+
 .logo { align-self: center; }
 .logo-section{
     display: grid;
@@ -132,12 +136,12 @@ body{
 }
 
 .top-navigation {
-    padding: 30px 40px;
+    padding: 30px 30px 0px 40px;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-gap: 20px;
     box-sizing: border-box;
-    width: 99%;
+    width: 100%;
 }
 
 .search-container {
@@ -242,9 +246,11 @@ body{
 
 .center-content{
     padding: 30px 40px;
-    height: 100vh;
+    height: 100%;
+    width: 100%;
     overflow: scroll;
     padding-top: 0px;
+    background: white;
 }
 
 .row-length-button-container {

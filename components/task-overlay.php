@@ -34,9 +34,18 @@
                 <div class="form-input-container">
                     <span class="form-input-label">Add Collaborators</span>
                     <div class="in-type-input">
-                        <input class="form-input add-collaborator-input" placeholder="Type a collaborator name" type="text">
+                        <input oninput="loadCollaborators(this)" class="form-input add-collaborator-input"
+                        placeholder="Type a collaborator name" type="text" required>
+                        <div class="collaborator-filter-list">
+                        </div>
+                        <div class="input-close-button" onclick="clearCollaboratorsInput()">
+                            <span class="circular-badge">
+                                <img src="images/icons/fi-rr-cross-small.svg" alt="">
+                            </span>
+                        </div>
+
                         <div class="input-side-tag" onclick="slideCollaboratorPopupUp()">
-                            <span class="circular-badge">9</span>
+                            <span class="circular-badge">0</span>
                         </div>
                     </div>
                 </div>
@@ -58,45 +67,12 @@
                     <div class="close-button" onclick="slideCollaboratorPopupDown()">
                         <img src="images/icons/fi-rr-cross-small.svg" alt="">
                     </div>
-                    <h1 class="pop-up-title">Collaborators ( 5 )</h1> 
+                    <h1 class="pop-up-title">Collaborators</h1> 
                 </div>
 
                 <div class="popup-body">
                     <ul class="collaborator-list">
-                        <li class="collaborator-row">
-                            <p>Abdulmunim</p>
-                            <span>
-                                <img src="images/icons/fi-rr-cross-small.svg" alt="">   
-                            </span>
-                        </li>
 
-                        <li class="collaborator-row">
-                            <p>Mahmoud</p>
-                            <span>
-                                <img src="images/icons/fi-rr-cross-small.svg" alt="">   
-                            </span>
-                        </li>
-
-                        <li class="collaborator-row">
-                            <p>Teyei</p>
-                            <span>
-                                <img src="images/icons/fi-rr-cross-small.svg" alt="">   
-                            </span>
-                        </li>
-
-                        <li class="collaborator-row">
-                            <p>Ibrahim</p>
-                            <span>
-                                <img src="images/icons/fi-rr-cross-small.svg" alt="">   
-                            </span>
-                        </li>
-
-                        <li class="collaborator-row">
-                            <p>Johnny</p>
-                            <span>
-                                <img src="images/icons/fi-rr-cross-small.svg" alt="">   
-                            </span>
-                        </li>
                     </ul>
                 </div>
             </div>

@@ -25,6 +25,7 @@ let collaboratorPopup = document.querySelector(".collaborators-slide-popup");
 
 function slideCollaboratorPopupUp(){
     collaboratorPopup.style.top = "30%"
+    loadLocalCollaboratorListView();
 }
 
 function slideCollaboratorPopupDown(){

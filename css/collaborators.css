@@ -1,0 +1,47 @@
+.collaborator-filter-list {
+    width: 100%;
+    border: 1px solid red;
+    border-radius: 5px;
+    position: absolute;
+    top: calc(100% + 10px);
+    display: none;
+    z-index: 1;
+    border: 1px solid var(--accent);
+    overflow: hidden;
+}
+
+.collaborator-item {
+    background: var(--light-accent);
+    padding: 13px;
+    align-self: start;
+    border-bottom: 1.5px dashed var(--accent);
+    color: var(--accent);
+    cursor: pointer;
+    transition: 0.2s all;
+}.collaborator-item:hover {
+    background-color: var(--dark-accent);
+}
+
+.collaborator-item:last-child {
+    border-bottom: none;
+}
+
+.add-collaborator-input:valid ~ .collaborator-filter-list, 
+.add-collaborator-input:valid ~ .input-close-button {
+    display: grid;
+}
+
+.span-height-width {
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    place-content: center;
+    color: var(--light-accent);
+    font-size: 48px;
+    display: grid;
+}
+
+/* .span-height-width > * {
+    display: grid;
+} */

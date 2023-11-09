@@ -40,14 +40,14 @@
             <p>Add Subtask</p>
         </div>
 
-        <div class="row-length-button">
+        <a href="view-projects.php" class="row-length-button">
             <img src="images/icons/fi-rr-diagram-project.svg" class="icon" alt="">
             <p>View Projects</p>
-        </div>
+        </a>
 
-        <div class="row-length-button">
+        <a href="task-gantt.php" class="row-length-button">
             <img src="images/icons/fi-rr-chart-bullet.svg" class="icon" alt="">
             <p>View Gantt Chart</p>
-        </div>
+        </a>
     </div>
 </div>
