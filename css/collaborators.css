@@ -54,6 +54,10 @@
     content: "added";
 }
 
+.disabled-item.no-result::before {
+    content: "";
+}
+
 .disabled-item:hover{
     background-color:gainsboro;
     cursor: default;
@@ -70,7 +74,6 @@
     z-index: 10;
     display: none;
     place-items: center;
-    opacity: 0.97;
 }
 .loader-view > * {
     display: grid;

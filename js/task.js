@@ -1,3 +1,4 @@
+//TODO: Dependency Injection?
 let people = [];
 let addedCollaborators = [];
 
@@ -9,63 +10,59 @@ async function loadCollaborators(element){
     //TODO: Only have available people to add. Show if someone has been added
     // You shouldn't be able to add someone twice.
 
-    let givenInput = element.value //TODO: Clean value using regexes
+    let givenInput = element.value //TODO: Clean value using regexes, SQL Injection Issue
     let result = (givenInput != null) ? await fetchUserNames(givenInput) : [] ;
-    people = result;
+    people = result ?? [];
 
     // people = (givenInput != null) ? result.map( person => `${person.firstname} ${person.lastname}`) : [] ;
 
     //TODO: Should you be able to add yourself??
 
-    people.forEach( person => {
+    if(people.length > 0){
+        people.forEach( person => {
 
-        let fullname = `${person.firstname} ${person.lastname}`;
+            let fullname = `${person.firstname} ${person.lastname}`;
+    
+            let collaboratorItem = document.createElement("div");
+            collaboratorItem.textContent = fullname;
+    
+            let names = (addedCollaborators.length > 0) ? 
+            addedCollaborators.map( collaborator => `${collaborator.firstname} ${collaborator.lastname}`) : [] ;
+    
+            if(!names.includes(fullname)){
+                collaboratorItem.className = "collaborator-item";
+                collaboratorItem.addEventListener("click", () => {
+                    addedCollaborators.push(person);
+                    clearCollaboratorsInput();
+                    refreshCollaboratorCount();
+                });
+            }
+            else{
+                collaboratorItem.className = "collaborator-item disabled-item";
+            }
+    
+            collaboratorFilterListContainer.appendChild(collaboratorItem);
+        });
+    }
+    else{
 
         let collaboratorItem = document.createElement("div");
-        collaboratorItem.textContent = fullname;
-
-        let names = (addedCollaborators.length > 0) ? 
-        addedCollaborators.map( collaborator => `${collaborator.firstname} ${collaborator.lastname}`) : [] ;
-
-        if(!names.includes(fullname)){
-            collaboratorItem.className = "collaborator-item";
-            collaboratorItem.addEventListener("click", () => {
-                addedCollaborators.push(person);
-                clearCollaboratorsInput();
-                refreshCollaboratorCount();
-            });
-        }
-        else{
-            collaboratorItem.className = "collaborator-item disabled-item";
-        }
-
+        collaboratorItem.textContent = `No Results For ' ${givenInput} '`;
+        collaboratorItem.className = "collaborator-item disabled-item no-result";
         collaboratorFilterListContainer.appendChild(collaboratorItem);
-    });
+
+    }
 }
 
-function fetchUserNames(givenInput){
+async function fetchUserNames(givenInput){
 
     let params = `givenInput=${givenInput}`;
 
-    return new Promise((resolve,reject) => {
-
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", "include/user-names.fetch.php", true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-        xhr.onload = function(){
-            if( this.status == 200 ){
-                let users = JSON.parse(this.responseText);
-                console.log("users: ", users);
-                resolve(users)
-            }
-            else{
-                reject("Error With PHP Script");
-            }
-        }
-
-        xhr.send(params);
-
+    return await AJAXCall({
+        phpFilePath : "include/user-names.fetch.php",
+        rejectMessage: "Users Not Fetched",
+        params,
+        type: "fetch"
     });
 
 }
@@ -156,6 +153,8 @@ async function addNewTask() {
             console.log(error);
 
             setTimeout(() => {
+
+                showToast("Failed To Add Project");
                // Figure out how to display and error and perhaps retry?
             }, 3000);
         }
@@ -176,66 +175,64 @@ function resetTaskForm() {
 
 function sendTaskDetailsToDatabase(){
 
-    // add collaborators
+    //TODO: add collaborators
     function insertCollaboratorDetails() {
+
+        let result = addedCollaborators.map( person => person.user_id );
+        console.log("addedColaborator: ", addedCollaborators);
+        console.log("addedColaboratorIds: ", result);
+
         return new Promise((resolve, reject) => {  
             resolve();
         })
     }
 
-    //TODO:  add project
-    function insertProjectDetails(projectDetails) {
+    async function insertProjectDetails(projectDetails) {
 
-        let { 
+        let {
+            taskId, 
             supertaskId, 
-            startDate, 
-            endDate, 
+            startDate, //TODO: These need to be more
+            endDate, //TODO: These need to be more
             name, 
             description, 
             creatorId 
         } = projectDetails;
 
-        let params = `supertaskId=${supertaskId}&&`+
+        let params = `taskId=${taskId}&&`+
+            `supertaskId=${supertaskId}&&`+
             `startDate=${startDate}&&`+
             `endDate=${endDate}&&`+
             `name=${name}&&`+
             `description=${description}&&`+
             `creatorId=${creatorId}`;
-
-        return new Promise((resolve,reject) => {
-
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "include/add-new-task.post.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-            xhr.onload = function(){
-                if( this.status == 200 ){
-                    let result = this.responseText;
-                    console.log(result);
-
-                    if(result != "success") reject("Project Not Added");
-                    else { resolve(result) }
-                }
-                else{
-                    reject("Error With PHP Script");
-                }
-            }
-
-            xhr.send(params);
-
+            
+        await AJAXCall({
+                phpFilePath : "include/add-new-task.post.php",
+                rejectMessage: "Project Not Added",
+                params,
+                type : "post",
         });
 
     }
 
-    //TODO:  return success or error
     return new Promise( async (resolve, reject) => {
-        try {
-            // await insertCollaboratorDetails();
-            // await insertProjectDetails();
-            let result = addedCollaborators.map( person => person.user_id );
-            console.log("addedColaborator: ", addedCollaborators);
-            console.log("addedColaboratorIds: ", result);
 
+            let valuesFromInputs = collectValuesForAddingProject();
+
+            let projectDetails = { 
+                taskId: uniqueID(),
+                supertaskId: "0", 
+                startDate: valuesFromInputs.projectStartDate, 
+                endDate: valuesFromInputs.projectEndDate, 
+                name: valuesFromInputs.projectName, 
+                description: valuesFromInputs.projectDescription, 
+                creatorId: "abcdefghi"  //TODO: Get Proper ID
+            };
+
+        try {
+            // await insertCollaboratorDetails(projectDetails);
+            await insertProjectDetails(projectDetails);
             resolve();
         }
         catch(error) {
@@ -244,7 +241,44 @@ function sendTaskDetailsToDatabase(){
     })
 }
 
+function AJAXCall(callObject){
+
+    let {
+        phpFilePath,
+        rejectMessage,
+        params,
+        type,
+    } = callObject;
+
+    return new Promise((resolve,reject) => {
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", phpFilePath, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function(){
+            if( this.status == 200 ){
+
+                let result = type == "fetch" ? 
+                JSON.parse(this.responseText) : this.responseText ;
+
+                //TODO: Take a look one more time
+                if(result != "success" && type != "fetch") reject(rejectMessage || "SQLError");
+                else { resolve(result) }
+            }
+            else{
+                reject("Error With PHP Script");
+            }
+        }
+
+        xhr.send(params);
+
+    });
+}
+
 function showToast(message){
+
+    //TODO: Have an option for errors
     let body = document.querySelector("body");
     let toastView = document.createElement("div");
     toastView.className = "toast";
@@ -260,4 +294,33 @@ function showToast(message){
         }, 3000);
     },1000);
 
+}
+
+function collectValuesForAddingProject(){
+
+    //TODO: Input Error Bubbling
+    let addProjectForm = document.querySelector(".add-project-form");
+
+    //TODO: Clean Values, SQL Injection Issues
+    let projectName = addProjectForm.querySelector(".project-name-input").value;
+    let projectStartDate = addProjectForm.querySelector(".project-start-date").value;
+    let projectEndDate = addProjectForm.querySelector(".project-end-date").value;
+    let projectDescription = addProjectForm.querySelector(".task-description-input").value;
+
+
+    return {
+        projectName,
+        projectStartDate,
+        projectEndDate,
+        projectDescription
+    }
+}
+
+function uniqueID(){
+    const date = Date.now();
+    const dateReversed = parseInt(String(date).split("").reverse().join(""));
+
+    const base36 = number => (number).toString(36);
+
+    return base36(dateReversed) + base36(date);
 }
