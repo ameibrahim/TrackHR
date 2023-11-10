@@ -12,15 +12,19 @@ function loadCollaborators(element){
     people.forEach( person => {
 
         let collaboratorItem = document.createElement("div");
-        collaboratorItem.className = "collaborator-item";
-
         collaboratorItem.textContent = person;
 
-        collaboratorItem.addEventListener("click", () => {
-            addedCollaborators.push(person);
-            clearCollaboratorsInput();
-            refreshCollaboratorCount();
-        });
+        if(!addedCollaborators.includes(person)){
+            collaboratorItem.className = "collaborator-item";
+            collaboratorItem.addEventListener("click", () => {
+                addedCollaborators.push(person);
+                clearCollaboratorsInput();
+                refreshCollaboratorCount();
+            });
+        }
+        else{
+            collaboratorItem.className = "collaborator-item disabled-item";
+        }
 
         collaboratorFilterListContainer.appendChild(collaboratorItem);
     });
@@ -85,4 +89,79 @@ function removePersonFromList(index){
     console.log("gg: ",addedCollaborators)
     refreshCollaboratorCount();
     loadLocalCollaboratorListView();
+}
+
+function showTaskLoader() {
+    let loaderView = document.querySelector(".loader-view");
+    loaderView.style.display = "grid";
+}
+
+function hideTaskLoader() {
+    let loaderView = document.querySelector(".loader-view");
+    loaderView.style.display = "none";
+}
+
+async function addNewTask() {
+
+    if(checkInputFields()){
+        showTaskLoader();
+        try {
+            await sendTaskDetailsToDatabase();
+
+            setTimeout(() => {
+                hideTaskLoader();
+                resetTaskForm();
+                hideAddTaskForm();
+                showToast("Project Added Successsfully");
+            }, 3000);
+        }
+        catch(error) {
+            console.log(error);
+
+            setTimeout(() => {
+               // Figure out how to display and error and perhaps retry?
+            }, 3000);
+        }
+
+    }
+
+}
+
+function checkInputFields(){
+    // Check input fields and bubble required inputs.
+    return true;
+}
+
+function resetTaskForm() {
+    // reset all input fields and styles.
+    hideTaskLoader();
+}
+
+function sendTaskDetailsToDatabase(){
+
+    // add collaborators
+    // add project
+    // return success or error
+
+    return new Promise((resolve, reject) => {
+        resolve();
+    })
+}
+
+function showToast(message){
+    let body = document.querySelector("body");
+    let toastView = document.createElement("div");
+    toastView.className = "toast";
+    toastView.textContent = message;
+
+    body.append(toastView);
+
+    setTimeout(() => {
+        toastView.style.top = "20px";
+        setTimeout(() => {
+            toastView.style.top = "-100px";
+            setTimeout(() => toastView.remove(), 1000)
+        }, 3000);
+    },1000);
+
 }

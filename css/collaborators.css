@@ -42,6 +42,46 @@
     display: grid;
 }
 
+.disabled-item {
+    background: gainsboro;
+    color: grey;
+}
+
+.disabled-item::before {
+    position: absolute;
+    right: 13px;
+    width: auto;
+    content: "added";
+}
+
+.disabled-item:hover{
+    background-color:gainsboro;
+    cursor: default;
+}
+
+
+.loader-view {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    --sk-color: var(--accent);
+    --sk-size: 50px;
+    background: var(--light-accent);
+    z-index: 10;
+    display: none;
+    place-items: center;
+    opacity: 0.97;
+}
+.loader-view > * {
+    display: grid;
+    place-items: center;
+    grid-gap: 40px;
+}
+
+.loader-view p {
+    color: var(--accent);
+}
+
 /* .span-height-width > * {
     display: grid;
 } */

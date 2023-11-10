@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="css/grid-table.css">
 
-    <script src="js/index.js" defer></script>
+    <script src="js/index.js?4" defer></script>
 </head>
 <body>
     
@@ -51,9 +51,8 @@
         </div>
     </div>
 
-    // SUB-OVERLAYS 
-    <?php include 'components/task-overlay.php'; ?>
-    <?php include 'components/subtask-overlay.php'; ?>
+    <!-- SUB-OVERLAYS  -->
+    <?php include 'components/overlays.php'; ?>
 
 
 

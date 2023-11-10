@@ -36,6 +36,7 @@ body > * {
 
 .gantt-bar{
     --bar-color: var(--blue);
+    --bar-color: black;
     position: relative;
     width: 100%;
     background: white;
@@ -62,7 +63,7 @@ body > * {
     position: absolute;
     height: 2px;
     width: 10%;
-    background: var(--blue-gradient);
+    background: var(--black-gradient);
     bottom: -2px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
@@ -74,6 +75,7 @@ body > * {
     height: 10px;
     width: 10px;
     background: var(--blue);
+    background: black;
     border-radius: 50%;
     top: -4px;
     left: calc(100% - 5px);

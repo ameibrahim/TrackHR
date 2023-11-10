@@ -56,22 +56,6 @@ input[type=number] {
 	background-color: var(--primary-color);
 }
 
-.alert-box{
-    padding: 1em 2em;
-    background: var(--secondary-color);
-    position: fixed;
-    top: -100px;
-    left: 50%;
-    transition: 1s all;
-    transform: translate(-50%, 0px);
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    color: white;
-    cursor: default;
-    z-index: 1000;
-    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
 .select-none {
     user-select: none;
     -moz-user-select: none;
