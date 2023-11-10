@@ -1,12 +1,15 @@
 /* TASK */
 let addTaskOverlay = document.querySelector(".task-overlay");
+let popup = addTaskOverlay.querySelector(".popup");
 
 function showAddTaskForm(){
-    addTaskOverlay.style.display = "grid"
+    addTaskOverlay.style.display = "grid";
+    // popup.style.transform = "scale(1)";
 }
 
 function hideAddTaskForm(){
     addTaskOverlay.style.display = "none"
+    // addTaskOverlay.style.transform = "scale(0)";
 }
 
 /* SUBTASK */

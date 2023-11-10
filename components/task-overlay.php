@@ -7,6 +7,17 @@
             <h1 class="pop-up-title">Add A Project</h1> 
         </div>
 
+        <div class="loader-view">
+            <div>
+                <div class="sk-fold">
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                </div>
+                <p>Adding Project ...</p>
+            </div>
+        </div>
 
         <div class="popup-body">
             <form class="task-form add-project-form">
@@ -55,11 +66,7 @@
                     <input class="form-input task-description-input" placeholder="Task Description" type="text">
                 </div>
             
-                <button class="submit-button stretch-x" type="button">Add New Task</button>
-                <div class="sk-bounce hidden-at-launch stretch-x create-report-loader">
-                    <div class="sk-bounce-dot"></div>
-                    <div class="sk-bounce-dot"></div>
-                </div>
+                <button class="submit-button stretch-x" type="button" onclick="addNewTask()">Add New Task</button>
             </form>
 
             <div class="popup collaborators-slide-popup">

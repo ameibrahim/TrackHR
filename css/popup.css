@@ -1,7 +1,6 @@
-.popup{
+.popup {
     position: relative;
     box-shadow: var(--boxshadowD);
-    /* padding: 30px; */
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr;
@@ -9,8 +8,8 @@
     box-sizing: border-box;
     border-radius: 20px;
     background: var(--pale-background);
-    min-width: 250px;
     min-width: 450px;
+    transition: 0.4s;
 }
 
 .overlay{
@@ -94,7 +93,7 @@
     position: relative;
     padding: 1em 2em;
     margin: 0px;
-    border-bottom: 1.5px solid #ecebeb;
+    border-bottom: 1px solid var(--accent);
     width: 100%;
     display: grid;
     place-items: center;

@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workers</title>
-    <link rel="stylesheet" href="css/font.css">
-    <link rel="stylesheet" href="css/root.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/popup.css">
-    <link rel="stylesheet" href="css/inputs.css">
+    <?php include 'components/major-css-imports.php'; ?>
 
     <link rel="stylesheet" href="css/grid-table.css">
 

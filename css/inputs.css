@@ -11,7 +11,7 @@
 .green-border{  border-color: var(--primary-color) !important;}
 .light-green-bg{ background-color: var(--primary-color) !important;}
 .blue-bg { background-color: rgb(17, 2, 80) !important; }
-.hidden-at-launch{ display: none; }
+.hidden-at-launch{ display: none !important; }
 
 /* END: Minor Changes To UI */
 

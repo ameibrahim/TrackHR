@@ -34,6 +34,7 @@ a {
 
     --blue: #297CF6;
     --blue-gradient: linear-gradient(255deg, #297CF6, #95BCF6, transparent);
+    --black-gradient: linear-gradient(255deg, black, #000000A0, transparent);
 }
 
 * {
