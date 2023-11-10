@@ -23,9 +23,9 @@
         <?php include 'components/top-navigation.php'; ?>
 
         <div class="center-content gantt-center-content">
-            <div class="max-view" onclick="toggleCenterView()">
+            <div class="max-view">
                 <h1 class="header-title">Gantt of Projects</h1>
-                <div class="view-icon">
+                <div class="view-icon" onclick="toggleCenterView()">
                     <img class="icon full-screen-icon hover-enlarge" src="images/icons/fi-rr-expand.svg" alt="">
                     <img class="icon min-screen-icon hover-enlarge" src="images/icons/fi-rr-compress.svg" alt="">
                 </div>

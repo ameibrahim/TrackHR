@@ -1,7 +1,8 @@
-let people = ["AbdulMunim", "Ibrahim", "Mahmoud" ];
+//TODO: Dependency Injection?
+let people = [];
 let addedCollaborators = [];
 
-function loadCollaborators(element){
+async function loadCollaborators(element){
 
     let collaboratorFilterListContainer = document.querySelector(".collaborator-filter-list");
     collaboratorFilterListContainer.innerHTML = "";
@@ -9,25 +10,61 @@ function loadCollaborators(element){
     //TODO: Only have available people to add. Show if someone has been added
     // You shouldn't be able to add someone twice.
 
-    people.forEach( person => {
+    let givenInput = element.value //TODO: Clean value using regexes, SQL Injection Issue
+    let result = (givenInput != null) ? await fetchUserNames(givenInput) : [] ;
+    people = result ?? [];
+
+    // people = (givenInput != null) ? result.map( person => `${person.firstname} ${person.lastname}`) : [] ;
+
+    //TODO: Should you be able to add yourself??
+
+    if(people.length > 0){
+        people.forEach( person => {
+
+            let fullname = `${person.firstname} ${person.lastname}`;
+    
+            let collaboratorItem = document.createElement("div");
+            collaboratorItem.textContent = fullname;
+    
+            let names = (addedCollaborators.length > 0) ? 
+            addedCollaborators.map( collaborator => `${collaborator.firstname} ${collaborator.lastname}`) : [] ;
+    
+            if(!names.includes(fullname)){
+                collaboratorItem.className = "collaborator-item";
+                collaboratorItem.addEventListener("click", () => {
+                    addedCollaborators.push(person);
+                    clearCollaboratorsInput();
+                    refreshCollaboratorCount();
+                });
+            }
+            else{
+                collaboratorItem.className = "collaborator-item disabled-item";
+            }
+    
+            collaboratorFilterListContainer.appendChild(collaboratorItem);
+        });
+    }
+    else{
 
         let collaboratorItem = document.createElement("div");
-        collaboratorItem.textContent = person;
-
-        if(!addedCollaborators.includes(person)){
-            collaboratorItem.className = "collaborator-item";
-            collaboratorItem.addEventListener("click", () => {
-                addedCollaborators.push(person);
-                clearCollaboratorsInput();
-                refreshCollaboratorCount();
-            });
-        }
-        else{
-            collaboratorItem.className = "collaborator-item disabled-item";
-        }
-
+        collaboratorItem.textContent = `No Results For ' ${givenInput} '`;
+        collaboratorItem.className = "collaborator-item disabled-item no-result";
         collaboratorFilterListContainer.appendChild(collaboratorItem);
+
+    }
+}
+
+async function fetchUserNames(givenInput){
+
+    let params = `givenInput=${givenInput}`;
+
+    return await AJAXCall({
+        phpFilePath : "include/user-names.fetch.php",
+        rejectMessage: "Users Not Fetched",
+        params,
+        type: "fetch"
     });
+
 }
 
 function clearCollaboratorsInput() {
@@ -54,14 +91,12 @@ function loadLocalCollaboratorListView(){
 
     if( addedCollaborators.length > 0 ){
         addedCollaborators.forEach( ( person, index ) => {
-
-            console.log(addedCollaborators);
     
             let collaboratorRow = document.createElement("li");
             collaboratorRow.className = "collaborator-row";
     
             let collaboratorRowInnerHTML = 
-            `   <p>${ person }</p>
+            `   <p>${ person.firstname + " " + person.lastname }</p>
                 <span onclick="removePersonFromList(${ index })">
                     <img src="images/icons/fi-rr-cross-small.svg" alt="">   
                 </span>
@@ -86,7 +121,6 @@ function loadLocalCollaboratorListView(){
 
 function removePersonFromList(index){
     addedCollaborators.splice(index,1);
-    console.log("gg: ",addedCollaborators)
     refreshCollaboratorCount();
     loadLocalCollaboratorListView();
 }
@@ -119,6 +153,8 @@ async function addNewTask() {
             console.log(error);
 
             setTimeout(() => {
+
+                showToast("Failed To Add Project");
                // Figure out how to display and error and perhaps retry?
             }, 3000);
         }
@@ -139,16 +175,110 @@ function resetTaskForm() {
 
 function sendTaskDetailsToDatabase(){
 
-    // add collaborators
-    // add project
-    // return success or error
+    //TODO: add collaborators
+    function insertCollaboratorDetails() {
 
-    return new Promise((resolve, reject) => {
-        resolve();
+        let result = addedCollaborators.map( person => person.user_id );
+        console.log("addedColaborator: ", addedCollaborators);
+        console.log("addedColaboratorIds: ", result);
+
+        return new Promise((resolve, reject) => {  
+            resolve();
+        })
+    }
+
+    async function insertProjectDetails(projectDetails) {
+
+        let {
+            taskId, 
+            supertaskId, 
+            startDate, //TODO: These need to be more
+            endDate, //TODO: These need to be more
+            name, 
+            description, 
+            creatorId 
+        } = projectDetails;
+
+        let params = `taskId=${taskId}&&`+
+            `supertaskId=${supertaskId}&&`+
+            `startDate=${startDate}&&`+
+            `endDate=${endDate}&&`+
+            `name=${name}&&`+
+            `description=${description}&&`+
+            `creatorId=${creatorId}`;
+            
+        await AJAXCall({
+                phpFilePath : "include/add-new-task.post.php",
+                rejectMessage: "Project Not Added",
+                params,
+                type : "post",
+        });
+
+    }
+
+    return new Promise( async (resolve, reject) => {
+
+            let valuesFromInputs = collectValuesForAddingProject();
+
+            let projectDetails = { 
+                taskId: uniqueID(),
+                supertaskId: "0", 
+                startDate: valuesFromInputs.projectStartDate, 
+                endDate: valuesFromInputs.projectEndDate, 
+                name: valuesFromInputs.projectName, 
+                description: valuesFromInputs.projectDescription, 
+                creatorId: "abcdefghi"  //TODO: Get Proper ID
+            };
+
+        try {
+            // await insertCollaboratorDetails(projectDetails);
+            await insertProjectDetails(projectDetails);
+            resolve();
+        }
+        catch(error) {
+            reject();
+        }
     })
 }
 
+function AJAXCall(callObject){
+
+    let {
+        phpFilePath,
+        rejectMessage,
+        params,
+        type,
+    } = callObject;
+
+    return new Promise((resolve,reject) => {
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", phpFilePath, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function(){
+            if( this.status == 200 ){
+
+                let result = type == "fetch" ? 
+                JSON.parse(this.responseText) : this.responseText ;
+
+                //TODO: Take a look one more time
+                if(result != "success" && type != "fetch") reject(rejectMessage || "SQLError");
+                else { resolve(result) }
+            }
+            else{
+                reject("Error With PHP Script");
+            }
+        }
+
+        xhr.send(params);
+
+    });
+}
+
 function showToast(message){
+
+    //TODO: Have an option for errors
     let body = document.querySelector("body");
     let toastView = document.createElement("div");
     toastView.className = "toast";
@@ -164,4 +294,33 @@ function showToast(message){
         }, 3000);
     },1000);
 
+}
+
+function collectValuesForAddingProject(){
+
+    //TODO: Input Error Bubbling
+    let addProjectForm = document.querySelector(".add-project-form");
+
+    //TODO: Clean Values, SQL Injection Issues
+    let projectName = addProjectForm.querySelector(".project-name-input").value;
+    let projectStartDate = addProjectForm.querySelector(".project-start-date").value;
+    let projectEndDate = addProjectForm.querySelector(".project-end-date").value;
+    let projectDescription = addProjectForm.querySelector(".task-description-input").value;
+
+
+    return {
+        projectName,
+        projectStartDate,
+        projectEndDate,
+        projectDescription
+    }
+}
+
+function uniqueID(){
+    const date = Date.now();
+    const dateReversed = parseInt(String(date).split("").reverse().join(""));
+
+    const base36 = number => (number).toString(36);
+
+    return base36(dateReversed) + base36(date);
 }
