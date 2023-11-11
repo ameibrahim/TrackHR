@@ -2,8 +2,20 @@
     <div class="popup">
         <div class="popup-header">
             <h1 class="pop-up-title">Add A Subtask</h1>
-            <div class="close-button" onclick="hideAddSubtaskForm()">
+            <div class="close-button" onclick="hideAddSubtaskForm(this)">
                 <img src="images/icons/fi-rr-cross-small.svg" alt="">
+            </div>
+        </div>
+
+        <div class="loader-view">
+            <div>
+                <div class="sk-fold">
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                </div>
+                <p>Adding Project ...</p>
             </div>
         </div>
 
@@ -51,10 +63,24 @@
                         <input class="form-input patient-date-of-test" placeholder="end date" type="date" required>
                     </div>
                 </div>
-            
+
                 <div class="form-input-container">
                     <span class="form-input-label">Add Collaborators</span>
-                    <input class="form-input patient-type-of-test" placeholder="Type a collaborator name" type="text">
+                    <div class="in-type-input">
+                        <input oninput="loadCollaborators(this)" class="form-input add-collaborator-input"
+                        placeholder="Type a collaborator name" type="text" required>
+                        <div class="collaborator-filter-list">
+                        </div>
+                        <div class="input-close-button" onclick="clearCollaboratorsInput(this)">
+                            <span class="circular-badge">
+                                <img src="images/icons/fi-rr-cross-small.svg" alt="">
+                            </span>
+                        </div>
+
+                        <div class="input-side-tag" onclick="slideCollaboratorPopupUp(this)">
+                            <span class="circular-badge">0</span>
+                        </div>
+                    </div>
                 </div>
             
                 <div class="form-input-container span-three">
@@ -67,12 +93,28 @@
                     <input class="form-input doctor-name" placeholder="Doctor Name" type="text" disabled>
                 </div> -->
             
-                <button class="submit-button stretch-x" type="button">Add New Task</button>
+                <button class="submit-button stretch-x" type="button" onclick="addNewSubTask()">Add New Task</button>
                 <div class="sk-bounce hidden-at-launch stretch-x create-report-loader">
                     <div class="sk-bounce-dot"></div>
                     <div class="sk-bounce-dot"></div>
                 </div>
             </form>
+
+            <div class="popup collaborators-slide-popup">
+                <div class="popup-header">
+                    <div class="close-button" onclick="slideCollaboratorPopupDown(this)">
+                        <img src="images/icons/fi-rr-cross-small.svg" alt="">
+                    </div>
+                    <h1 class="pop-up-title">Collaborators</h1> 
+                </div>
+
+                <div class="popup-body">
+                    <ul class="collaborator-list">
+
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

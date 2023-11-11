@@ -2,9 +2,20 @@
 let people = [];
 let addedCollaborators = [];
 
+function clearForm(coreElement) {
+    people = [];
+    addedCollaborators = [];
+    refreshCollaboratorCount(coreElement);
+}
+
 async function loadCollaborators(element){
 
-    let collaboratorFilterListContainer = document.querySelector(".collaborator-filter-list");
+    let coreElement = element.parentElement.parentElement
+    .parentElement.parentElement;
+
+    console.log("refreColab2 : ",coreElement);
+
+    let collaboratorFilterListContainer = coreElement.querySelector(".collaborator-filter-list");
     collaboratorFilterListContainer.innerHTML = "";
 
     //TODO: Only have available people to add. Show if someone has been added
@@ -33,8 +44,8 @@ async function loadCollaborators(element){
                 collaboratorItem.className = "collaborator-item";
                 collaboratorItem.addEventListener("click", () => {
                     addedCollaborators.push(person);
-                    clearCollaboratorsInput();
-                    refreshCollaboratorCount();
+                    clearCollaboratorsInput(coreElement);
+                    refreshCollaboratorCount(coreElement);
                 });
             }
             else{
@@ -67,15 +78,20 @@ async function fetchUserNames(givenInput){
 
 }
 
-function clearCollaboratorsInput() {
-    let collaboratorInput = document.querySelector(".add-collaborator-input");
+function clearCollaboratorsInput(coreElement) {
+    let collaboratorInput = coreElement.querySelector(".add-collaborator-input");
     collaboratorInput.value = "";
 }
 
-function refreshCollaboratorCount() {
-    let circularBadge = document.querySelector(".input-side-tag .circular-badge");
-    let collaboratorPopupTitle = document.querySelector
+function refreshCollaboratorCount(coreElement) {
+
+    console.log("colCount1: ", coreElement);
+    let circularBadge = coreElement.querySelector(".input-side-tag .circular-badge");
+    let collaboratorPopupTitle = coreElement.querySelector
     (".collaborators-slide-popup > .popup-header > .pop-up-title");
+
+    // console.log("85:", coreElement);
+
 
     let collaboratorCount = addedCollaborators.length;
     circularBadge.textContent = collaboratorCount;
@@ -83,9 +99,11 @@ function refreshCollaboratorCount() {
 
 }
 
-function loadLocalCollaboratorListView(){
+function loadLocalCollaboratorListView(coreElement){
 
-    let collaboratorListContainer = document.querySelector
+    console.log("94: ",coreElement);
+
+    let collaboratorListContainer = coreElement.querySelector
     (".collaborators-slide-popup > .popup-body > .collaborator-list");
     collaboratorListContainer.innerHTML = "";
 
@@ -97,7 +115,7 @@ function loadLocalCollaboratorListView(){
     
             let collaboratorRowInnerHTML = 
             `   <p>${ person.firstname + " " + person.lastname }</p>
-                <span onclick="removePersonFromList(${ index })">
+                <span onclick="removePersonFromList(this, ${ index })">
                     <img src="images/icons/fi-rr-cross-small.svg" alt="">   
                 </span>
             `;
@@ -119,10 +137,14 @@ function loadLocalCollaboratorListView(){
 
 }
 
-function removePersonFromList(index){
+function removePersonFromList(element, index){
     addedCollaborators.splice(index,1);
-    refreshCollaboratorCount();
-    loadLocalCollaboratorListView();
+    let coreElement = element.parentElement.parentElement
+    .parentElement.parentElement.parentElement;
+    
+    console.log("gg: ",coreElement);
+    refreshCollaboratorCount(coreElement);
+    loadLocalCollaboratorListView(coreElement);
 }
 
 function showTaskLoader() {

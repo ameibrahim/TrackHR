@@ -7,30 +7,39 @@ function showAddTaskForm(){
     // popup.style.transform = "scale(1)";
 }
 
-function hideAddTaskForm(){
+function hideAddTaskForm(element){
     addTaskOverlay.style.display = "none"
     // addTaskOverlay.style.transform = "scale(0)";
+
+    let coreElement = element.parentElement.parentElement;
+    clearForm(coreElement);
 }
 
 /* SUBTASK */
 let addSubtaskOverlay = document.querySelector(".subtask-overlay");
 
 function showAddSubtaskForm(){
-    addSubtaskOverlay.style.display = "grid"
+    addSubtaskOverlay.style.display = "grid";
 }
 
-function hideAddSubtaskForm(){
-    addSubtaskOverlay.style.display = "none"
+function hideAddSubtaskForm(element){
+    addSubtaskOverlay.style.display = "none";
+
+    let coreElement = element.parentElement.parentElement;
+    clearForm(coreElement);
+
 }
 
-/* Collaborator View */
-let collaboratorPopup = document.querySelector(".collaborators-slide-popup");
-
-function slideCollaboratorPopupUp(){
+function slideCollaboratorPopupUp(element){
+    let coreElement = element.parentElement.parentElement.parentElement.parentElement;
+    let collaboratorPopup = coreElement.querySelector(".collaborators-slide-popup");
     collaboratorPopup.style.top = "30%"
-    loadLocalCollaboratorListView();
+
+    loadLocalCollaboratorListView(coreElement);
 }
 
-function slideCollaboratorPopupDown(){
+function slideCollaboratorPopupDown(element){
+    let coreElement = element.parentElement.parentElement.parentElement.parentElement;
+    let collaboratorPopup = coreElement.querySelector(".collaborators-slide-popup");
     collaboratorPopup.style.top = "100%"
 }

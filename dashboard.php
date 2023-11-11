@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <?php include 'components/major-css-imports.php'; ?>
-
-    <script src="js/index.js" defer></script>
+    <?php include 'components/major-imports.php'; ?>
 </head>
 <body>
     

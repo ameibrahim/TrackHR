@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gantt</title>
-    <?php include 'components/major-css-imports.php'; ?>
+    <?php include 'components/major-imports.php'; ?>
 
     <link rel="stylesheet" href="css/max-view.css?3">
     <link rel="stylesheet" href="css/gantt.css?2">
     <!-- <link rel="stylesheet" href="css/grid-table.css"> -->
-
-    <script src="js/index.js?1" defer></script>
     <script src="js/gantt.js" defer></script>
     <script src="js/fullscreenView.js" defer></script>
 </head>

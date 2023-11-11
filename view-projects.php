@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects</title>
-    <?php include 'components/major-css-imports.php'; ?>
+    <?php include 'components/major-imports.php'; ?>
 
     <link rel="stylesheet" href="css/grid-table.css">
-
-    <script src="js/index.js" defer></script>
 
 </head>
 <body>
