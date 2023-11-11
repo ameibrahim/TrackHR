@@ -5,32 +5,35 @@ let popup = addTaskOverlay.querySelector(".popup");
 function showAddTaskForm(){
     addTaskOverlay.style.display = "grid";
     // popup.style.transform = "scale(1)";
+    clearForm(addTaskOverlay);
 }
 
 function hideAddTaskForm(){
     addTaskOverlay.style.display = "none"
-    // addTaskOverlay.style.transform = "scale(0)";
 }
 
 /* SUBTASK */
 let addSubtaskOverlay = document.querySelector(".subtask-overlay");
 
 function showAddSubtaskForm(){
-    addSubtaskOverlay.style.display = "grid"
+    addSubtaskOverlay.style.display = "grid";
+    clearForm(addSubtaskOverlay);
 }
 
 function hideAddSubtaskForm(){
-    addSubtaskOverlay.style.display = "none"
+    addSubtaskOverlay.style.display = "none";
 }
 
-/* Collaborator View */
-let collaboratorPopup = document.querySelector(".collaborators-slide-popup");
-
-function slideCollaboratorPopupUp(){
+function slideCollaboratorPopupUp(element){
+    let coreElement = element.parentElement.parentElement.parentElement.parentElement;
+    let collaboratorPopup = coreElement.querySelector(".collaborators-slide-popup");
     collaboratorPopup.style.top = "30%"
-    loadLocalCollaboratorListView();
+
+    loadLocalCollaboratorListView(coreElement);
 }
 
-function slideCollaboratorPopupDown(){
+function slideCollaboratorPopupDown(element){
+    let coreElement = element.parentElement.parentElement.parentElement.parentElement;
+    let collaboratorPopup = coreElement.querySelector(".collaborators-slide-popup");
     collaboratorPopup.style.top = "100%"
 }

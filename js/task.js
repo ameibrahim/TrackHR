@@ -2,9 +2,20 @@
 let people = [];
 let addedCollaborators = [];
 
+function clearForm(coreElement) {
+    people = [];
+    addedCollaborators = [];
+    refreshCollaboratorCount(coreElement);
+}
+
 async function loadCollaborators(element){
 
-    let collaboratorFilterListContainer = document.querySelector(".collaborator-filter-list");
+    let coreElement = element.parentElement.parentElement
+    .parentElement.parentElement;
+
+    console.log("refreColab2 : ",coreElement);
+
+    let collaboratorFilterListContainer = coreElement.querySelector(".collaborator-filter-list");
     collaboratorFilterListContainer.innerHTML = "";
 
     //TODO: Only have available people to add. Show if someone has been added
@@ -33,8 +44,8 @@ async function loadCollaborators(element){
                 collaboratorItem.className = "collaborator-item";
                 collaboratorItem.addEventListener("click", () => {
                     addedCollaborators.push(person);
-                    clearCollaboratorsInput();
-                    refreshCollaboratorCount();
+                    clearCollaboratorsInput(coreElement);
+                    refreshCollaboratorCount(coreElement);
                 });
             }
             else{
@@ -67,15 +78,20 @@ async function fetchUserNames(givenInput){
 
 }
 
-function clearCollaboratorsInput() {
-    let collaboratorInput = document.querySelector(".add-collaborator-input");
+function clearCollaboratorsInput(coreElement) {
+    let collaboratorInput = coreElement.querySelector(".add-collaborator-input");
     collaboratorInput.value = "";
 }
 
-function refreshCollaboratorCount() {
-    let circularBadge = document.querySelector(".input-side-tag .circular-badge");
-    let collaboratorPopupTitle = document.querySelector
+function refreshCollaboratorCount(coreElement) {
+
+    console.log("colCount1: ", coreElement);
+    let circularBadge = coreElement.querySelector(".input-side-tag .circular-badge");
+    let collaboratorPopupTitle = coreElement.querySelector
     (".collaborators-slide-popup > .popup-header > .pop-up-title");
+
+    // console.log("85:", coreElement);
+
 
     let collaboratorCount = addedCollaborators.length;
     circularBadge.textContent = collaboratorCount;
@@ -83,9 +99,11 @@ function refreshCollaboratorCount() {
 
 }
 
-function loadLocalCollaboratorListView(){
+function loadLocalCollaboratorListView(coreElement){
 
-    let collaboratorListContainer = document.querySelector
+    console.log("94: ",coreElement);
+
+    let collaboratorListContainer = coreElement.querySelector
     (".collaborators-slide-popup > .popup-body > .collaborator-list");
     collaboratorListContainer.innerHTML = "";
 
@@ -97,7 +115,7 @@ function loadLocalCollaboratorListView(){
     
             let collaboratorRowInnerHTML = 
             `   <p>${ person.firstname + " " + person.lastname }</p>
-                <span onclick="removePersonFromList(${ index })">
+                <span onclick="removePersonFromList(this, ${ index })">
                     <img src="images/icons/fi-rr-cross-small.svg" alt="">   
                 </span>
             `;
@@ -119,34 +137,102 @@ function loadLocalCollaboratorListView(){
 
 }
 
-function removePersonFromList(index){
+function removePersonFromList(element, index){
     addedCollaborators.splice(index,1);
-    refreshCollaboratorCount();
-    loadLocalCollaboratorListView();
+    let coreElement = element.parentElement.parentElement
+    .parentElement.parentElement.parentElement;
+    
+    console.log("gg: ",coreElement);
+    refreshCollaboratorCount(coreElement);
+    loadLocalCollaboratorListView(coreElement);
 }
 
-function showTaskLoader() {
-    let loaderView = document.querySelector(".loader-view");
+function showTaskLoader(coreElement) {
+    let loaderView = coreElement.querySelector(".loader-view");
     loaderView.style.display = "grid";
 }
 
-function hideTaskLoader() {
-    let loaderView = document.querySelector(".loader-view");
+function hideTaskLoader(coreElement) {
+    let loaderView = coreElement.querySelector(".loader-view");
     loaderView.style.display = "none";
 }
 
-async function addNewTask() {
+function addNewTask() {
 
-    if(checkInputFields()){
-        showTaskLoader();
+    let valuesFromInputs = collectValuesForAddingProject();
+
+    let projectDetails = { 
+        taskId: uniqueID(),
+        supertaskId: "0", 
+        startDate: valuesFromInputs.projectStartDate, 
+        endDate: valuesFromInputs.projectEndDate, 
+        name: valuesFromInputs.projectName, 
+        description: valuesFromInputs.projectDescription, 
+        creatorId: "abcdefghi"  //TODO: Get Proper ID
+    };
+
+    let coreElement = document.querySelector(".task-overlay");
+
+    let taskConfig = {
+        toastSuccessMessage: "Project Added Successsfully",
+        toastFailMessage: "Failed To Add Project",
+        projectDetails
+    }
+
+    processNewTaskRequest(taskConfig, coreElement);
+
+}
+
+
+function addNewSubTask() {
+
+    let valuesFromInputs = collectValuesForAddingSubTask();
+
+    let projectDetails = { 
+        taskId: uniqueID(),
+        supertaskId: valuesFromInputs.subtaskSupertaskID, 
+        startDate: valuesFromInputs.subtaskStartDate, 
+        endDate: valuesFromInputs.subtaskEndDate, 
+        name: valuesFromInputs.subtaskName, 
+        description: valuesFromInputs.subtaskDescription, 
+        creatorId: "abcdefghi"  //TODO: Get Proper ID
+    };
+
+    let coreElement = document.querySelector(".subtask-overlay");
+
+    let taskConfig = {
+        toastSuccessMessage: "Subtask Added Successsfully",
+        toastFailMessage: "Failed To Add Subtask",
+        projectDetails
+    }
+
+    processNewTaskRequest(taskConfig, coreElement);
+
+}
+
+async function processNewTaskRequest(taskConfig, coreElement){
+
+    let {
+        toastSuccessMessage,
+        toastFailMessage,
+        projectDetails
+    } = taskConfig;
+
+    if(checkInputFieldsFor(form = "")){
+        showTaskLoader(coreElement);
         try {
-            await sendTaskDetailsToDatabase();
+
+            let projectCollaboratorIDs = addedCollaborators.map( person => person.user_id );
+            console.log("addedCollaborator: ", addedCollaborators);
+            console.log("projectCollaboratorIDs: ", projectCollaboratorIDs);
+
+            await sendTaskDetailsToDatabase(projectDetails, projectCollaboratorIDs);
 
             setTimeout(() => {
-                hideTaskLoader();
-                resetTaskForm();
+                hideTaskLoader(coreElement);
+                resetTaskForm(); // Make Modular
                 hideAddTaskForm();
-                showToast("Project Added Successsfully");
+                showToast(toastSuccessMessage);
             }, 3000);
         }
         catch(error) {
@@ -154,33 +240,29 @@ async function addNewTask() {
 
             setTimeout(() => {
 
-                showToast("Failed To Add Project");
+                showToast(toastFailMessage);
                // Figure out how to display and error and perhaps retry?
             }, 3000);
         }
 
     }
-
 }
 
-function checkInputFields(){
+function checkInputFieldsFor(form){
     // Check input fields and bubble required inputs.
     return true;
 }
 
 function resetTaskForm() {
     // reset all input fields and styles.
-    hideTaskLoader();
 }
 
-function sendTaskDetailsToDatabase(){
+function sendTaskDetailsToDatabase(projectDetails, projectCollaboratorIDs){
 
     //TODO: add collaborators
-    function insertCollaboratorDetails() {
+    function insertCollaboratorDetails(projectCollaboratorIDs) {
 
-        let result = addedCollaborators.map( person => person.user_id );
-        console.log("addedColaborator: ", addedCollaborators);
-        console.log("addedColaboratorIds: ", result);
+        // projectCollaboratorIDs
 
         return new Promise((resolve, reject) => {  
             resolve();
@@ -217,19 +299,6 @@ function sendTaskDetailsToDatabase(){
     }
 
     return new Promise( async (resolve, reject) => {
-
-            let valuesFromInputs = collectValuesForAddingProject();
-
-            let projectDetails = { 
-                taskId: uniqueID(),
-                supertaskId: "0", 
-                startDate: valuesFromInputs.projectStartDate, 
-                endDate: valuesFromInputs.projectEndDate, 
-                name: valuesFromInputs.projectName, 
-                description: valuesFromInputs.projectDescription, 
-                creatorId: "abcdefghi"  //TODO: Get Proper ID
-            };
-
         try {
             // await insertCollaboratorDetails(projectDetails);
             await insertProjectDetails(projectDetails);
@@ -313,6 +382,28 @@ function collectValuesForAddingProject(){
         projectStartDate,
         projectEndDate,
         projectDescription
+    }
+}
+
+function collectValuesForAddingSubTask(){
+
+    //TODO: Input Error Bubbling
+    let addSubTaskForm = document.querySelector(".add-subtask-form");
+
+    //TODO: Clean Values, SQL Injection Issues
+    let subtaskSupertaskID = addSubTaskForm.querySelector(".subtask-id-input").getAttribute("data-id");
+    let subtaskName = addSubTaskForm.querySelector(".subtask-name-input").value;
+    let subtaskStartDate = addSubTaskForm.querySelector(".subtask-start-date").value;
+    let subtaskEndDate = addSubTaskForm.querySelector(".subtask-end-date").value;
+    let subtaskDescription = addSubTaskForm.querySelector(".subtask-description-input").value;
+
+
+    return {
+        subtaskSupertaskID,
+        subtaskName,
+        subtaskStartDate,
+        subtaskEndDate,
+        subtaskDescription
     }
 }
 

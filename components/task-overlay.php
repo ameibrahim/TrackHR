@@ -55,7 +55,7 @@
                             </span>
                         </div>
 
-                        <div class="input-side-tag" onclick="slideCollaboratorPopupUp()">
+                        <div class="input-side-tag" onclick="slideCollaboratorPopupUp(this)">
                             <span class="circular-badge">0</span>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
 
             <div class="popup collaborators-slide-popup">
                 <div class="popup-header">
-                    <div class="close-button" onclick="slideCollaboratorPopupDown()">
+                    <div class="close-button" onclick="slideCollaboratorPopupDown(this)">
                         <img src="images/icons/fi-rr-cross-small.svg" alt="">
                     </div>
                     <h1 class="pop-up-title">Collaborators</h1> 
