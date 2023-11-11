@@ -147,28 +147,92 @@ function removePersonFromList(element, index){
     loadLocalCollaboratorListView(coreElement);
 }
 
-function showTaskLoader() {
-    let loaderView = document.querySelector(".loader-view");
+function showTaskLoader(coreElement) {
+    let loaderView = coreElement.querySelector(".loader-view");
     loaderView.style.display = "grid";
 }
 
-function hideTaskLoader() {
-    let loaderView = document.querySelector(".loader-view");
+function hideTaskLoader(coreElement) {
+    let loaderView = coreElement.querySelector(".loader-view");
     loaderView.style.display = "none";
 }
 
-async function addNewTask() {
+function addNewTask() {
 
-    if(checkInputFields()){
-        showTaskLoader();
+    let valuesFromInputs = collectValuesForAddingProject();
+
+    let projectDetails = { 
+        taskId: uniqueID(),
+        supertaskId: "0", 
+        startDate: valuesFromInputs.projectStartDate, 
+        endDate: valuesFromInputs.projectEndDate, 
+        name: valuesFromInputs.projectName, 
+        description: valuesFromInputs.projectDescription, 
+        creatorId: "abcdefghi"  //TODO: Get Proper ID
+    };
+
+    let coreElement = document.querySelector(".task-overlay");
+
+    let taskConfig = {
+        toastSuccessMessage: "Project Added Successsfully",
+        toastFailMessage: "Failed To Add Project",
+        projectDetails
+    }
+
+    processNewTaskRequest(taskConfig, coreElement);
+
+}
+
+
+function addNewSubTask() {
+
+    let valuesFromInputs = collectValuesForAddingSubTask();
+
+    let projectDetails = { 
+        taskId: uniqueID(),
+        supertaskId: valuesFromInputs.subtaskSupertaskID, 
+        startDate: valuesFromInputs.subtaskStartDate, 
+        endDate: valuesFromInputs.subtaskEndDate, 
+        name: valuesFromInputs.subtaskName, 
+        description: valuesFromInputs.subtaskDescription, 
+        creatorId: "abcdefghi"  //TODO: Get Proper ID
+    };
+
+    let coreElement = document.querySelector(".subtask-overlay");
+
+    let taskConfig = {
+        toastSuccessMessage: "Subtask Added Successsfully",
+        toastFailMessage: "Failed To Add Subtask",
+        projectDetails
+    }
+
+    processNewTaskRequest(taskConfig, coreElement);
+
+}
+
+async function processNewTaskRequest(taskConfig, coreElement){
+
+    let {
+        toastSuccessMessage,
+        toastFailMessage,
+        projectDetails
+    } = taskConfig;
+
+    if(checkInputFieldsFor(form = "")){
+        showTaskLoader(coreElement);
         try {
-            await sendTaskDetailsToDatabase();
+
+            let projectCollaboratorIDs = addedCollaborators.map( person => person.user_id );
+            console.log("addedCollaborator: ", addedCollaborators);
+            console.log("projectCollaboratorIDs: ", projectCollaboratorIDs);
+
+            await sendTaskDetailsToDatabase(projectDetails, projectCollaboratorIDs);
 
             setTimeout(() => {
-                hideTaskLoader();
-                resetTaskForm();
+                hideTaskLoader(coreElement);
+                resetTaskForm(); // Make Modular
                 hideAddTaskForm();
-                showToast("Project Added Successsfully");
+                showToast(toastSuccessMessage);
             }, 3000);
         }
         catch(error) {
@@ -176,33 +240,29 @@ async function addNewTask() {
 
             setTimeout(() => {
 
-                showToast("Failed To Add Project");
+                showToast(toastFailMessage);
                // Figure out how to display and error and perhaps retry?
             }, 3000);
         }
 
     }
-
 }
 
-function checkInputFields(){
+function checkInputFieldsFor(form){
     // Check input fields and bubble required inputs.
     return true;
 }
 
 function resetTaskForm() {
     // reset all input fields and styles.
-    hideTaskLoader();
 }
 
-function sendTaskDetailsToDatabase(){
+function sendTaskDetailsToDatabase(projectDetails, projectCollaboratorIDs){
 
     //TODO: add collaborators
-    function insertCollaboratorDetails() {
+    function insertCollaboratorDetails(projectCollaboratorIDs) {
 
-        let result = addedCollaborators.map( person => person.user_id );
-        console.log("addedColaborator: ", addedCollaborators);
-        console.log("addedColaboratorIds: ", result);
+        // projectCollaboratorIDs
 
         return new Promise((resolve, reject) => {  
             resolve();
@@ -239,19 +299,6 @@ function sendTaskDetailsToDatabase(){
     }
 
     return new Promise( async (resolve, reject) => {
-
-            let valuesFromInputs = collectValuesForAddingProject();
-
-            let projectDetails = { 
-                taskId: uniqueID(),
-                supertaskId: "0", 
-                startDate: valuesFromInputs.projectStartDate, 
-                endDate: valuesFromInputs.projectEndDate, 
-                name: valuesFromInputs.projectName, 
-                description: valuesFromInputs.projectDescription, 
-                creatorId: "abcdefghi"  //TODO: Get Proper ID
-            };
-
         try {
             // await insertCollaboratorDetails(projectDetails);
             await insertProjectDetails(projectDetails);
@@ -335,6 +382,28 @@ function collectValuesForAddingProject(){
         projectStartDate,
         projectEndDate,
         projectDescription
+    }
+}
+
+function collectValuesForAddingSubTask(){
+
+    //TODO: Input Error Bubbling
+    let addSubTaskForm = document.querySelector(".add-subtask-form");
+
+    //TODO: Clean Values, SQL Injection Issues
+    let subtaskSupertaskID = addSubTaskForm.querySelector(".subtask-id-input").getAttribute("data-id");
+    let subtaskName = addSubTaskForm.querySelector(".subtask-name-input").value;
+    let subtaskStartDate = addSubTaskForm.querySelector(".subtask-start-date").value;
+    let subtaskEndDate = addSubTaskForm.querySelector(".subtask-end-date").value;
+    let subtaskDescription = addSubTaskForm.querySelector(".subtask-description-input").value;
+
+
+    return {
+        subtaskSupertaskID,
+        subtaskName,
+        subtaskStartDate,
+        subtaskEndDate,
+        subtaskDescription
     }
 }
 

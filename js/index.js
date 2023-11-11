@@ -5,14 +5,11 @@ let popup = addTaskOverlay.querySelector(".popup");
 function showAddTaskForm(){
     addTaskOverlay.style.display = "grid";
     // popup.style.transform = "scale(1)";
+    clearForm(addTaskOverlay);
 }
 
-function hideAddTaskForm(element){
+function hideAddTaskForm(){
     addTaskOverlay.style.display = "none"
-    // addTaskOverlay.style.transform = "scale(0)";
-
-    let coreElement = element.parentElement.parentElement;
-    clearForm(coreElement);
 }
 
 /* SUBTASK */
@@ -20,14 +17,11 @@ let addSubtaskOverlay = document.querySelector(".subtask-overlay");
 
 function showAddSubtaskForm(){
     addSubtaskOverlay.style.display = "grid";
+    clearForm(addSubtaskOverlay);
 }
 
-function hideAddSubtaskForm(element){
+function hideAddSubtaskForm(){
     addSubtaskOverlay.style.display = "none";
-
-    let coreElement = element.parentElement.parentElement;
-    clearForm(coreElement);
-
 }
 
 function slideCollaboratorPopupUp(element){

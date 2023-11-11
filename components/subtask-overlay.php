@@ -2,7 +2,7 @@
     <div class="popup">
         <div class="popup-header">
             <h1 class="pop-up-title">Add A Subtask</h1>
-            <div class="close-button" onclick="hideAddSubtaskForm(this)">
+            <div class="close-button" onclick="hideAddSubtaskForm()">
                 <img src="images/icons/fi-rr-cross-small.svg" alt="">
             </div>
         </div>
@@ -20,11 +20,11 @@
         </div>
 
         <div class="popup-body">
-            <form class="task-form">
+            <form class="task-form add-subtask-form">
 
                 <div class="form-input-container user-search-container">
                     <span class="form-input-label">Match to parent task</span>
-                    <input class="form-input" placeholder="Parent Task" type="text" required>
+                    <input class="form-input subtask-id-input" data-id="351hrinexlosyeado" placeholder="Parent Task" type="text" required>
                     <!-- <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span> -->
                     <!-- <div class="search-list-of-users">
                     </div> -->
@@ -45,7 +45,7 @@
     
                 <div class="form-input-container user-search-container">
                     <span class="form-input-label">Task Name</span>
-                    <input class="form-input" placeholder="Task Name" type="text" required>
+                    <input class="form-input subtask-name-input" placeholder="Task Name" type="text" required>
                     <!-- <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span> -->
                     <!-- <div class="search-list-of-users">
                     </div> -->
@@ -55,12 +55,12 @@
     
                     <div class="form-input-container">
                         <span class="form-input-label">start date</span>
-                        <input class="form-input patient-date-of-test" placeholder="start date" type="date" required>
+                        <input class="form-input subtask-start-date" placeholder="start date" type="date" required>
                     </div>
     
                     <div class="form-input-container">
                         <span class="form-input-label">Deadline</span>
-                        <input class="form-input patient-date-of-test" placeholder="end date" type="date" required>
+                        <input class="form-input subtask-end-date" placeholder="end date" type="date" required>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@
             
                 <div class="form-input-container span-three">
                     <span class="form-input-label">Task Description</span>
-                    <input class="form-input doctor-remarks" placeholder="Task Description" type="text">
+                    <input class="form-input subtask-description-input" placeholder="Task Description" type="text">
                 </div>
             
                 <!-- <div class="form-input-container place-end">

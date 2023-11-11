@@ -1,7 +1,7 @@
 <div class="overlay task-overlay">
     <div class="popup">
         <div class="popup-header">
-            <div class="close-button" onclick="hideAddTaskForm(this)">
+            <div class="close-button" onclick="hideAddTaskForm()">
                 <img src="images/icons/fi-rr-cross-small.svg" alt="">
             </div>
             <h1 class="pop-up-title">Add A Project</h1> 
