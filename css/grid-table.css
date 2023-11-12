@@ -1,7 +1,11 @@
+*{
+    font-family: Avenir Next;
+}
+
 .section-title{
     /* font-size: 1em; */
     color: black;
-    margin-bottom: 3cqmax;
+    margin-bottom: 30px;
 }
 
 .grid-table-section {
@@ -9,7 +13,6 @@
     background: var(--pale-background);
     border-radius: 10px;
     width: 100%;
-
     counter-reset: section;
 }
 
@@ -42,4 +45,49 @@
 .itemization-badge::after {
     position: relative;
     content: counter(section);
+}
+
+@media screen and (max-width:700px){
+    .grid-table-section {
+        width: 90%;
+        left: 5%;
+        display: grid;
+        grid-gap: 20px;
+        overflow: hidden;
+        background-color: unset;
+    }
+
+    .grid-header {
+        display: none;
+    }
+
+    .grid-row > *::before{
+        content: attr(data-title)":";
+        color: var(--accent);
+        font-weight: bold;
+        margin-right: 10px;
+
+    }
+
+    .grid-row { 
+        grid-template-columns: 1fr;
+        justify-items: start;
+        padding: 0px;
+        grid-gap: 0px;
+        background-color: var(--pale-background);
+        border-radius: 10px;
+        border: none;
+    }
+
+    .grid-row > * {
+        border-bottom: 1px solid var(--dark-accent);
+        justify-self: unset;
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    .grid-row > *:last-child { 
+        /* justify-self: start;  */
+        border:none;
+    }
 }
