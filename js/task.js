@@ -223,10 +223,9 @@ async function processNewTaskRequest(taskConfig, coreElement){
         try {
 
             let projectCollaboratorIDs = addedCollaborators.map( person => person.user_id );
-            console.log("addedCollaborator: ", addedCollaborators);
-            console.log("projectCollaboratorIDs: ", projectCollaboratorIDs);
 
-            await sendTaskDetailsToDatabase(projectDetails, projectCollaboratorIDs);
+            await insertCollaboratorDetails(projectDetails, projectCollaboratorIDs);
+            await insertProjectDetails(projectDetails);
 
             setTimeout(() => {
                 hideTaskLoader(coreElement);
@@ -257,57 +256,64 @@ function resetTaskForm() {
     // reset all input fields and styles.
 }
 
-function sendTaskDetailsToDatabase(projectDetails, projectCollaboratorIDs){
+//TODO: add collaborators
+async function insertCollaboratorDetails(projectDetails, projectCollaboratorIDs) {
 
-    //TODO: add collaborators
-    function insertCollaboratorDetails(projectCollaboratorIDs) {
+    let {
+        taskId
+    } = projectDetails;
 
-        // projectCollaboratorIDs
-
-        return new Promise((resolve, reject) => {  
-            resolve();
-        })
-    }
-
-    async function insertProjectDetails(projectDetails) {
-
-        let {
-            taskId, 
-            supertaskId, 
-            startDate, //TODO: These need to be more
-            endDate, //TODO: These need to be more
-            name, 
-            description, 
-            creatorId 
-        } = projectDetails;
+    projectCollaboratorIDs.forEach( async (userId, index) => {
 
         let params = `taskId=${taskId}&&`+
-            `supertaskId=${supertaskId}&&`+
-            `startDate=${startDate}&&`+
-            `endDate=${endDate}&&`+
-            `name=${name}&&`+
-            `description=${description}&&`+
-            `creatorId=${creatorId}`;
-            
-        await AJAXCall({
-                phpFilePath : "include/add-new-task.post.php",
-                rejectMessage: "Project Not Added",
+        `userId=${userId}`
+
+        console.log(`task ${index} started`);
+
+        try {
+            await AJAXCall({
+                phpFilePath : "include/add-collaborator.post.php",
+                rejectMessage: "Collaborator Not Added",
                 params,
                 type : "post",
-        });
-
-    }
-
-    return new Promise( async (resolve, reject) => {
-        try {
-            // await insertCollaboratorDetails(projectDetails);
-            await insertProjectDetails(projectDetails);
-            resolve();
+            });
+    
+            console.log(`task ${index} complete`);
         }
-        catch(error) {
-            reject();
+        catch(error){
+            console.log(`something went wrond adding a collaborator`);
         }
+
     })
+}
+
+async function insertProjectDetails(projectDetails) {
+
+    let {
+        taskId, 
+        supertaskId, 
+        startDate, //TODO: These need to be more
+        endDate, //TODO: These need to be more
+        name, 
+        description, 
+        creatorId 
+    } = projectDetails;
+
+    let params = `taskId=${taskId}&&`+
+        `supertaskId=${supertaskId}&&`+
+        `startDate=${startDate}&&`+
+        `endDate=${endDate}&&`+
+        `name=${name}&&`+
+        `description=${description}&&`+
+        `creatorId=${creatorId}`;
+        
+    await AJAXCall({
+            phpFilePath : "include/add-new-task.post.php",
+            rejectMessage: "Project Not Added",
+            params,
+            type : "post",
+    });
+
 }
 
 function AJAXCall(callObject){
