@@ -8,13 +8,10 @@
         die("Connection failed: " . mysqli_connect_error());
     }
     
-    $taskId = $_POST['taskId'];
-    $userId = $_POST['userId'];
-    $headId = $_POST['headId'];
+    $id = $_POST['id'];
 
     $query = "
-        INSERT INTO `collaborators`(`task_id`, `user_id`, `head_id`) 
-        VALUES ('$taskId','$userId', '$headId')
+        DELETE FROM aiiovdft_neudc.employee WHERE id = '$id'
     ";
 
     $result = mysqli_query($conn,$query);

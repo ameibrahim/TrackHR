@@ -17,22 +17,58 @@
             <p class="navigation-row-name">Dashboard</p>
         </a>
 
-        <a href="managers.php" class="navigation-row">
-            <span class="selected"></span>
-            <img src="images/icons/fi-rr-people-arrows-left-right.svg" alt="" class="row-icon">
-            <p class="navigation-row-name">Managers</p>
-        </a>
+        <?php
 
-        <a href="supervisors.php" class="navigation-row">
-            <span class="selected"></span>
-            <img src="images/icons/fi-rr-people-poll.svg" alt="" class="row-icon">
-            <p class="navigation-row-name">Supervisors</p>
-        </a>
+            if ($roleID < 1) {
+                echo '
+                    <a href="employees.php" class="navigation-row">
+                        <span class="selected"></span>
+                        <img src="images/icons/fi-rr-images-user.svg" alt="" class="row-icon">
+                        <p class="navigation-row-name">Employees</p>
+                    </a>
 
-        <a href="workers.php" class="navigation-row">
+                    <a href="managers.php" class="navigation-row">
+                        <span class="selected"></span>
+                        <img src="images/icons/fi-rr-people-arrows-left-right.svg" alt="" class="row-icon">
+                        <p class="navigation-row-name">Managers</p>
+                    </a>
+                ';
+            }
+
+        ?>
+
+        <?php
+
+        if ($roleID < 2) {
+            echo '
+                <a href="supervisors.php" class="navigation-row">
+                    <span class="selected"></span>
+                    <img src="images/icons/fi-rr-people-poll.svg" alt="" class="row-icon">
+                    <p class="navigation-row-name">Supervisors</p>
+                </a>
+            ';
+        }
+
+        ?>
+
+        <?php
+
+        if ($roleID < 3) {
+            echo '
+                <a href="workers.php" class="navigation-row">
+                    <span class="selected"></span>
+                    <img src="images/icons/fi-rr-people-carry-box.svg" alt="" class="row-icon">
+                    <p class="navigation-row-name">Workers</p>
+                </a>
+            ';
+        }
+
+        ?>
+
+        <a href="tasks.php" class="navigation-row">
             <span class="selected"></span>
-            <img src="images/icons/fi-rr-people-carry-box.svg" alt="" class="row-icon">
-            <p class="navigation-row-name">Workers</p>
+            <img src="images/icons/fi-rr-bullseye-arrow.svg" alt="" class="row-icon">
+            <p class="navigation-row-name">Tasks</p>
         </a>
 
         <a href="task-gantt.php" class="navigation-row">

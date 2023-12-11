@@ -1,6 +1,5 @@
-.collaborator-filter-list {
+.filter-list {
     width: 100%;
-    border: 1px solid red;
     border-radius: 5px;
     position: absolute;
     top: calc(100% + 10px);
@@ -10,7 +9,7 @@
     overflow: hidden;
 }
 
-.collaborator-item {
+.filter-item {
     background: var(--light-accent);
     padding: 13px;
     align-self: start;
@@ -18,15 +17,15 @@
     color: var(--accent);
     cursor: pointer;
     transition: 0.2s all;
-}.collaborator-item:hover {
+}.filter-item:hover {
     background-color: var(--dark-accent);
 }
 
-.collaborator-item:last-child {
+.filter-item:last-child {
     border-bottom: none;
 }
 
-.add-collaborator-input:valid ~ .collaborator-filter-list, 
+.add-collaborator-input:valid ~ .filter-list, 
 .add-collaborator-input:valid ~ .input-close-button {
     display: grid;
 }

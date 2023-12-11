@@ -1,3 +1,32 @@
+<?php
+  session_start();
+
+  $username = $_SESSION['username'];
+  $roleID = $_SESSION['role'];
+  $roleID = number_format($roleID);
+
+//   switch ($roleID) {
+//     case "0":
+//       include 'dashboard/admin.php';
+//       break;
+//     case "1":
+//       include 'dashboard/ceo.php';
+//       break;
+//     case "2":
+//       include 'dashboard/manager.php';
+//       break;
+//     case "3":
+//       include 'dashboard/supervisor.php';
+//       break;
+//     case "4":
+//       include 'dashboard/worker.php';
+//       break;
+//     default:
+      
+//   }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

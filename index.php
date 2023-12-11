@@ -1,11 +1,11 @@
 <?php
-  // session_start();
+  session_start();
 
-  // $isPatient = isset($_SESSION['patient-username']);
-  // $isDoctor = isset($_SESSION['doctor-username']);
+  $username = isset($_SESSION['username']);
+  $roleID = isset($_SESSION['role']);
 
-  // if($isPatient && !$isDoctor){ include 'patient.php'; }
-  // else if($isDoctor && !$isPatient){ include 'doctor.php'; }
-  // else if($isDoctor && $isPatient){ header('location:./logout.php'); }
-  // else{ header('location:./login.php'); }
+  if($username && $roleID){ include 'dashboard.php'; }
+  else{ header('location:./login.php'); }
+
+
 ?>
