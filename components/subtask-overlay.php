@@ -24,10 +24,21 @@
 
                 <div class="form-input-container user-search-container">
                     <span class="form-input-label">Match to parent task</span>
-                    <input class="form-input subtask-id-input" data-id="351hrinexlosyeado" placeholder="Parent Task" type="text" required>
-                    <!-- <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span> -->
-                    <!-- <div class="search-list-of-users">
-                    </div> -->
+                    <div class="in-type-input">
+                        <input class="form-input subtask-id-input" data-id="351hrinexlosyeado" placeholder="Parent Task" type="text" required>
+                        <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span>
+                        <div class="parent-task-filter-list">
+                        </div>
+                        <div class="input-close-button" onclick="clearCollaboratorsInput()">
+                            <span class="circular-badge">
+                                <img src="images/icons/fi-rr-cross-small.svg" alt="">
+                            </span>
+                        </div>
+
+                        <div class="input-side-tag" onclick="slideCollaboratorPopupUp(this)">
+                            <span class="circular-badge">0</span>
+                        </div>
+                    </div>
                 </div>
     <!-- 
                 <div class="grid-two-columns">
@@ -69,7 +80,7 @@
                     <div class="in-type-input">
                         <input oninput="loadCollaborators(this)" class="form-input add-collaborator-input"
                         placeholder="Type a collaborator name" type="text" required>
-                        <div class="collaborator-filter-list">
+                        <div class="filter-list">
                         </div>
                         <div class="input-close-button" onclick="clearCollaboratorsInput(this)">
                             <span class="circular-badge">

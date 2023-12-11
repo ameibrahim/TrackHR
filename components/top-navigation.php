@@ -1,3 +1,11 @@
+<?php 
+    session_start();
+    echo "<script> 
+        const username = '".$_SESSION['username']."';
+        const userID = '".$_SESSION['id']."';
+    </script>";
+?>
+
 <div class="top-navigation">
     <div class="search-container">
         <img src="images/icons/fi-rr-search.svg" alt="">
@@ -30,19 +38,36 @@
     </div>
 
     <div class="row-length-button-container">
-        <div class="row-length-button" onclick="showAddTaskForm()">
-            <img src="images/icons/fi-rr-plus.svg" class="icon" alt="">
-            <p>New Project</p>
-        </div>
 
-        <div class="row-length-button" onclick="showAddSubtaskForm()">
-            <img src="images/icons/fi-rr-diagram-subtask.svg" class="icon" alt="">
-            <p>Add Subtask</p>
-        </div>
+        <?php
 
-        <a href="view-projects.php" class="row-length-button">
+            if($roleID < 1){
+                echo '
+                    <div class="row-length-button" onclick="showAddTaskForm()">
+                        <img src="images/icons/fi-rr-plus.svg" class="icon" alt="">
+                        <p>New Project</p>
+                    </div>
+                ';
+            }
+
+        ?>
+
+        <?php
+
+        if($roleID < 3){
+            echo '
+                <div class="row-length-button" onclick="showAddSubtaskForm()">
+                    <img src="images/icons/fi-rr-diagram-subtask.svg" class="icon" alt="">
+                    <p>Add Subtask</p>
+                </div>
+            ';
+        }
+
+        ?>
+
+        <a href="tasks.php" class="row-length-button">
             <img src="images/icons/fi-rr-diagram-project.svg" class="icon" alt="">
-            <p>View Projects</p>
+            <p>View Projects and Tasks</p>
         </a>
 
         <a href="task-gantt.php" class="row-length-button">

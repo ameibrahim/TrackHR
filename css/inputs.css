@@ -131,13 +131,13 @@
     color: white;
 }.submit-button:hover{ background: var(--accent); }
 
-.task-form .submit-button[data-error="true"]{
+/* .task-form .submit-button[data-error="true"]{
     border: 1px solid var(--error);
     color: var(--error);
     background: #fbdfdf;
     font-weight: 500;
     cursor: default;
-}
+} */
 
 /* required */
 

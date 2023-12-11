@@ -47,7 +47,7 @@
                     <div class="in-type-input">
                         <input oninput="loadCollaborators(this)" class="form-input add-collaborator-input"
                         placeholder="Type a collaborator name" type="text" required>
-                        <div class="collaborator-filter-list">
+                        <div class="filter-list">
                         </div>
                         <div class="input-close-button" onclick="clearCollaboratorsInput()">
                             <span class="circular-badge">

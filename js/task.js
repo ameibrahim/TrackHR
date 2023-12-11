@@ -1,6 +1,8 @@
-//TODO: Dependency Injection?
+//TODO: Dependency Injection? [ NO ]
 let people = [];
 let addedCollaborators = [];
+
+console.log("creatorID: ", userID);
 
 function clearForm(coreElement) {
     people = [];
@@ -13,35 +15,31 @@ async function loadCollaborators(element){
     let coreElement = element.parentElement.parentElement
     .parentElement.parentElement;
 
-    console.log("refreColab2 : ",coreElement);
-
-    let collaboratorFilterListContainer = coreElement.querySelector(".collaborator-filter-list");
+    let collaboratorFilterListContainer = coreElement.querySelector(".filter-list");
     collaboratorFilterListContainer.innerHTML = "";
-
-    //TODO: Only have available people to add. Show if someone has been added
-    // You shouldn't be able to add someone twice.
 
     let givenInput = element.value //TODO: Clean value using regexes, SQL Injection Issue
     let result = (givenInput != null) ? await fetchUserNames(givenInput) : [] ;
     people = result ?? [];
 
-    // people = (givenInput != null) ? result.map( person => `${person.firstname} ${person.lastname}`) : [] ;
-
-    //TODO: Should you be able to add yourself??
+    //TODO: Should you be able to add yourself?? [ YES ]
 
     if(people.length > 0){
         people.forEach( person => {
 
-            let fullname = `${person.firstname} ${person.lastname}`;
+            // let fullname = `${person.firstname} ${person.lastname}`;
+            let fullname = person.username;
+            let title = person.role_title;
     
             let collaboratorItem = document.createElement("div");
-            collaboratorItem.textContent = fullname;
+            collaboratorItem.textContent = `${fullname} ( ${title} )`;
     
             let names = (addedCollaborators.length > 0) ? 
-            addedCollaborators.map( collaborator => `${collaborator.firstname} ${collaborator.lastname}`) : [] ;
+            // addedCollaborators.map( collaborator => `${collaborator.firstname} ${collaborator.lastname}`) : [] ;
+            addedCollaborators.map( collaborator => collaborator.username ) : [] ;
     
             if(!names.includes(fullname)){
-                collaboratorItem.className = "collaborator-item";
+                collaboratorItem.className = "filter-item";
                 collaboratorItem.addEventListener("click", () => {
                     addedCollaborators.push(person);
                     clearCollaboratorsInput(coreElement);
@@ -49,7 +47,7 @@ async function loadCollaborators(element){
                 });
             }
             else{
-                collaboratorItem.className = "collaborator-item disabled-item";
+                collaboratorItem.className = "filter-item disabled-item";
             }
     
             collaboratorFilterListContainer.appendChild(collaboratorItem);
@@ -59,7 +57,7 @@ async function loadCollaborators(element){
 
         let collaboratorItem = document.createElement("div");
         collaboratorItem.textContent = `No Results For ' ${givenInput} '`;
-        collaboratorItem.className = "collaborator-item disabled-item no-result";
+        collaboratorItem.className = "filter-item disabled-item no-result";
         collaboratorFilterListContainer.appendChild(collaboratorItem);
 
     }
@@ -85,13 +83,9 @@ function clearCollaboratorsInput(coreElement) {
 
 function refreshCollaboratorCount(coreElement) {
 
-    console.log("colCount1: ", coreElement);
     let circularBadge = coreElement.querySelector(".input-side-tag .circular-badge");
     let collaboratorPopupTitle = coreElement.querySelector
     (".collaborators-slide-popup > .popup-header > .pop-up-title");
-
-    // console.log("85:", coreElement);
-
 
     let collaboratorCount = addedCollaborators.length;
     circularBadge.textContent = collaboratorCount;
@@ -100,8 +94,6 @@ function refreshCollaboratorCount(coreElement) {
 }
 
 function loadLocalCollaboratorListView(coreElement){
-
-    console.log("94: ",coreElement);
 
     let collaboratorListContainer = coreElement.querySelector
     (".collaborators-slide-popup > .popup-body > .collaborator-list");
@@ -142,19 +134,8 @@ function removePersonFromList(element, index){
     let coreElement = element.parentElement.parentElement
     .parentElement.parentElement.parentElement;
     
-    console.log("gg: ",coreElement);
     refreshCollaboratorCount(coreElement);
     loadLocalCollaboratorListView(coreElement);
-}
-
-function showTaskLoader(coreElement) {
-    let loaderView = coreElement.querySelector(".loader-view");
-    loaderView.style.display = "grid";
-}
-
-function hideTaskLoader(coreElement) {
-    let loaderView = coreElement.querySelector(".loader-view");
-    loaderView.style.display = "none";
 }
 
 function addNewTask() {
@@ -168,7 +149,7 @@ function addNewTask() {
         endDate: valuesFromInputs.projectEndDate, 
         name: valuesFromInputs.projectName, 
         description: valuesFromInputs.projectDescription, 
-        creatorId: "abcdefghi"  //TODO: Get Proper ID
+        creatorId: userID  // globalUserID
     };
 
     let coreElement = document.querySelector(".task-overlay");
@@ -195,7 +176,7 @@ function addNewSubTask() {
         endDate: valuesFromInputs.subtaskEndDate, 
         name: valuesFromInputs.subtaskName, 
         description: valuesFromInputs.subtaskDescription, 
-        creatorId: "abcdefghi"  //TODO: Get Proper ID
+        creatorId: userID  //TODO: Global user ID
     };
 
     let coreElement = document.querySelector(".subtask-overlay");
@@ -256,19 +237,18 @@ function resetTaskForm() {
     // reset all input fields and styles.
 }
 
-//TODO: add collaborators
 async function insertCollaboratorDetails(projectDetails, projectCollaboratorIDs) {
 
     let {
-        taskId
+        taskId,
+        creatorId
     } = projectDetails;
 
     projectCollaboratorIDs.forEach( async (userId, index) => {
 
         let params = `taskId=${taskId}&&`+
-        `userId=${userId}`
-
-        console.log(`task ${index} started`);
+        `userId=${userId}&&`+
+        `headId=${creatorId}`
 
         try {
             await AJAXCall({
@@ -277,8 +257,6 @@ async function insertCollaboratorDetails(projectDetails, projectCollaboratorIDs)
                 params,
                 type : "post",
             });
-    
-            console.log(`task ${index} complete`);
         }
         catch(error){
             console.log(`something went wrond adding a collaborator`);
@@ -292,8 +270,8 @@ async function insertProjectDetails(projectDetails) {
     let {
         taskId, 
         supertaskId, 
-        startDate, //TODO: These need to be more
-        endDate, //TODO: These need to be more
+        startDate, //TODO: These need to be more ...
+        endDate, //TODO: These need to be more ...
         name, 
         description, 
         creatorId 
@@ -313,61 +291,6 @@ async function insertProjectDetails(projectDetails) {
             params,
             type : "post",
     });
-
-}
-
-function AJAXCall(callObject){
-
-    let {
-        phpFilePath,
-        rejectMessage,
-        params,
-        type,
-    } = callObject;
-
-    return new Promise((resolve,reject) => {
-
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", phpFilePath, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-        xhr.onload = function(){
-            if( this.status == 200 ){
-
-                let result = type == "fetch" ? 
-                JSON.parse(this.responseText) : this.responseText ;
-
-                //TODO: Take a look one more time
-                if(result != "success" && type != "fetch") reject(rejectMessage || "SQLError");
-                else { resolve(result) }
-            }
-            else{
-                reject("Error With PHP Script");
-            }
-        }
-
-        xhr.send(params);
-
-    });
-}
-
-function showToast(message){
-
-    //TODO: Have an option for errors
-    let body = document.querySelector("body");
-    let toastView = document.createElement("div");
-    toastView.className = "toast";
-    toastView.textContent = message;
-
-    body.append(toastView);
-
-    setTimeout(() => {
-        toastView.style.top = "20px";
-        setTimeout(() => {
-            toastView.style.top = "-100px";
-            setTimeout(() => toastView.remove(), 1000)
-        }, 3000);
-    },1000);
 
 }
 
