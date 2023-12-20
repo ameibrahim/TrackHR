@@ -25,9 +25,9 @@
                 <div class="form-input-container user-search-container">
                     <span class="form-input-label">Match to parent task</span>
                     <div class="in-type-input">
-                        <input class="form-input subtask-id-input" data-id="351hrinexlosyeado" placeholder="Parent Task" type="text" required>
+                        <input class="form-input subtask-id-input" data-id="351hrinexlosyeado" oninput="loadParentTasks(this)" placeholder="Parent Task" type="text" required>
                         <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span>
-                        <div class="parent-task-filter-list">
+                        <div class="parent-task filter-list">
                         </div>
                         <div class="input-close-button" onclick="clearCollaboratorsInput()">
                             <span class="circular-badge">
@@ -80,7 +80,7 @@
                     <div class="in-type-input">
                         <input oninput="loadCollaborators(this)" class="form-input add-collaborator-input"
                         placeholder="Type a collaborator name" type="text" required>
-                        <div class="filter-list">
+                        <div class="collaborator filter-list">
                         </div>
                         <div class="input-close-button" onclick="clearCollaboratorsInput(this)">
                             <span class="circular-badge">

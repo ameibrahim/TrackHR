@@ -7,7 +7,7 @@
     <?php include 'components/major-imports.php'; ?>
 
     <link rel="stylesheet" href="css/max-view.css?3">
-    <link rel="stylesheet" href="css/gantt.css?2">
+    <link rel="stylesheet" href="css/gantt.css?3">
     <!-- <link rel="stylesheet" href="css/grid-table.css"> -->
     <script src="js/gantt.js" defer></script>
     <script src="js/fullscreenView.js" defer></script>

@@ -15,7 +15,7 @@ async function loadCollaborators(element){
     let coreElement = element.parentElement.parentElement
     .parentElement.parentElement;
 
-    let collaboratorFilterListContainer = coreElement.querySelector(".filter-list");
+    let collaboratorFilterListContainer = coreElement.querySelector(".collaborator.filter-list");
     collaboratorFilterListContainer.innerHTML = "";
 
     let givenInput = element.value //TODO: Clean value using regexes, SQL Injection Issue
@@ -343,4 +343,33 @@ function uniqueID(){
     const base36 = number => (number).toString(36);
 
     return base36(dateReversed) + base36(date);
+}
+
+function fetchParentTasks(){
+
+    let params = `creatorId=${userID}`
+
+    return AJAXCall({
+        phpFilePath : "include/tasks.fetch.php",
+        rejectMessage: "Tasks not fetched",
+        params,
+        type : "fetch",
+    });
+
+}
+
+
+async function loadParentTasks(element){
+
+    let coreElement = element.parentElement.parentElement;
+
+    let parentTaskFilterListContainer = coreElement.querySelector(".parent-task.filter-list");
+    parentTaskFilterListContainer.innerHTML = "";
+
+    let givenInput = element.value //TODO: Clean value using regexes, SQL Injection Issue
+    let result = (givenInput != null) ? await fetchParentTasks(givenInput) : [] ;
+    parentTasks = result ?? [];
+
+    console.log(parentTasks)
+    
 }

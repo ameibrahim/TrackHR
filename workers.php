@@ -1,3 +1,8 @@
+<?php 
+    session_start();
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +11,8 @@
     <title>Workers</title>
     <?php include 'components/major-imports.php'; ?>
 
-    <link rel="stylesheet" href="css/grid-table.css">
+    <script src="js/loadingUsers.js?1"></script>
+
 </head>
 <body>
 
@@ -16,16 +22,41 @@
 
         <?php include 'components/top-navigation.php'; ?>
 
-        <div class="center-content projects-center-content">
-            <ul class="project-container">
-                <h1 class="header-title">Workers</h1>
-            </ul> 
+        <div class="center-content">
+
+            <h1 class="section-title">Workers</h1>
+
+            <div class="slider">
+                <p class="grid-slider-total"></p>
+            </div>
+
+            <div class="extended-wrapper">
+
+                <div class="grid-table-section users-grid-table">
+                    <ul class="grid-header" data-title="header">
+                        <li>#</li>
+                        <li>Name</li>
+                        <li>Email</li>
+                        <li>Current Task</li>
+                        <li>Role Title</li>
+                        <li>Options</li>
+                    </ul>
+
+                </div>
+
+                <div class="slide-to-scroll">scroll / slide → </div>
+            </div>
         </div>
     </div>
 
     <!-- SUB-OVERLAYS -->
     <?php include 'components/overlays.php'; ?>
 
+    <script>
+
+        buildUsersLayout(4);
+
+    </script>
     
 </body>
 </html>

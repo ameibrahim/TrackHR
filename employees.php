@@ -31,7 +31,6 @@
             <div class="extended-wrapper">
 
                 <div class="grid-table-section employee-grid-table">
-
                 </div>
 
                 <div class="slide-to-scroll">scroll / slide → </div>

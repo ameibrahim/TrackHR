@@ -1,5 +1,6 @@
 <?php 
     session_start();
+    
     echo "<script> 
         const username = '".$_SESSION['username']."';
         const userID = '".$_SESSION['id']."';
