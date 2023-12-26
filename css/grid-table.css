@@ -97,6 +97,7 @@
     display: grid;
     align-items: center;
     overflow-wrap: anywhere;
+    word-break: break-all;
 }
 
 .grid-row:last-child {

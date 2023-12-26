@@ -26,17 +26,12 @@
                     <span class="form-input-label">Match to parent task</span>
                     <div class="in-type-input">
                         <input class="form-input subtask-id-input" data-id="351hrinexlosyeado" oninput="loadParentTasks(this)" placeholder="Parent Task" type="text" required>
-                        <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span>
                         <div class="parent-task filter-list">
                         </div>
-                        <div class="input-close-button" onclick="clearCollaboratorsInput()">
+                        <div class="parent-release-button" onclick="releaseParentChoice(this)">
                             <span class="circular-badge">
                                 <img src="images/icons/fi-rr-cross-small.svg" alt="">
                             </span>
-                        </div>
-
-                        <div class="input-side-tag" onclick="slideCollaboratorPopupUp(this)">
-                            <span class="circular-badge">0</span>
                         </div>
                     </div>
                 </div>

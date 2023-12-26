@@ -1,8 +1,63 @@
 let ganttContainer = document.querySelector(".gantt-container");
+// let gantt100;
+let gantt100 =
+{id: "21", task_id: "1sp9abszjlqdmlwo1", supertask_id: "3ijrdblb3lqdhcjx3", start_date: "2023-12-01T00:00:00.000Z", end_date: "2023-12-31T00:00:00.000Z"} 
+
+let backButtonList = [];
+
+function goBack(){
+    if(backButtonList.length > 1){
+        backButtonList.pop();
+        getTasks(backButtonList[backButtonList.length - 1]);
+    }
+
+    console.log(backButtonList);
+}
+
+async function getTasks(supertaskID){
+
+    let creatorID = "abcdefghi"; // needs to be dynamic
+    let params = `creatorId=${creatorID}&&supertaskId=${supertaskID}`;
+    
+    ganttContainer.innerHTML = ""
+    try {
+
+        let result = await AJAXCall({
+            phpFilePath : "include/gantt.tasks.fetch.php",
+            rejectMessage: "Tasks Not Fetched",
+            params,
+            type : "fetch",
+        });
+
+        if(result.length > 0){
+    
+            result.forEach( rowData => {
+
+                console.log(rowData);
+
+                let rowPlacement = calculateRowPlacement(rowData);
+                let divider = createDivider();
+                ganttContainer.appendChild(createGanttRow(rowData, rowPlacement))
+                ganttContainer.appendChild(divider);
+            });
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+getTasks("0");
+backButtonList.push("0");
 
 function createGanttRow(rowData, rowPlacement){
 
-    let {rowTimeOptions, width, left } = rowPlacement;
+    let {
+        rowTimeOptions, 
+        width, 
+        left 
+    } = rowPlacement;
+    
     let { 
         startDate,
         endDate,
@@ -15,6 +70,10 @@ function createGanttRow(rowData, rowPlacement){
     ganttRow.style.width = width;
     ganttRow.style.left = left;
     ganttRow.setAttribute("data-complete",rowData.complete);
+
+    ganttRow.addEventListener("click", () => { 
+        getTasks(rowData.task_id); backButtonList.push(rowData.task_id);
+    })
 
     let ganttDates= document.createElement("div");
     ganttDates.className = "gantt-dates";
@@ -30,7 +89,7 @@ function createGanttRow(rowData, rowPlacement){
 
     let ganttBar = document.createElement("div");
     ganttBar.className = "gantt-bar";
-    ganttBar.textContent = rowData.task;
+    ganttBar.textContent = rowData.name;
 
     let ganttProgress = document.createElement("span");
     ganttProgress.className = "progress";
@@ -39,7 +98,7 @@ function createGanttRow(rowData, rowPlacement){
 
     let ganttBadge = document.createElement("span");
     ganttBadge.className = "badge";
-    ganttBadge.textContent = rowData.childrenTasks;
+    ganttBadge.textContent = rowData.children;
     ganttBadge.setAttribute("data-show", "true");
 
     ganttBar.appendChild(ganttProgress);
@@ -61,11 +120,6 @@ function createDivider(){
 
     return divider;
 }
-
-let gantt100 = {
-    startTime: "2023-12-13T13:46:00.000Z",
-    endTime: "2023-12-31T13:46:00.000Z",
-};
 
 let data = [
     {
@@ -120,19 +174,12 @@ let data = [
     }, 
 ]
 
-data.forEach( rowData => {
-    let rowPlacement = calculateRowPlacement(rowData);
-    let divider = createDivider();
-    ganttContainer.appendChild(createGanttRow(rowData, rowPlacement))
-    ganttContainer.appendChild(divider);
-});
-
 function calculateRowPlacement(rowData){
 
-    let rowTimeOptions = timeOptionsFromDateRange(rowData.date_created, rowData.deadline);
+    let rowTimeOptions = timeOptionsFromDateRange(rowData.start_date, rowData.end_date);
     let PersonalMinutes = rowTimeOptions.minutes;
-    let gantt100Minutes = timeOptionsFromDateRange(gantt100.startTime, gantt100.endTime).minutes;
-    let startDifference = timeOptionsFromDateRange(gantt100.startTime, rowData.date_created).minutes;
+    let gantt100Minutes = timeOptionsFromDateRange(gantt100.start_date, gantt100.end_date).minutes;
+    let startDifference = timeOptionsFromDateRange(gantt100.start_date, rowData.start_date).minutes;
 
     console.log(gantt100Minutes)
     console.log(PersonalMinutes)
@@ -184,8 +231,11 @@ function timeOptionsFromDateRange(start,end){
     let days = hours / 24 ;
     let weeks = days / 7;
 
-    let [ _startDate, _startHour ] = startDate.toISOString().split("T");
-    let [ _endDate, _endHour ] = endDate.toISOString().split("T");
+    console.log('start: ', start);
+
+    // check if the date is in JSON format
+    let [ _startDate, _startHour ] = startDate.toJSON().split("T");
+    let [ _endDate, _endHour ] = endDate.toJSON().split("T");
 
     let [__startHours, __startMinutes] = _startHour.split(".")[0].split(":");
     let [__endHours, __endMinutes] = _endHour.split(".")[0].split(":");
@@ -246,38 +296,38 @@ function displayWDHM(timeOptions) {
 
 }
 
-//Format We Are Using "2023-12-13T13:06:00.000Z"
+// //Format We Are Using "2023-12-13T13:06:00.000Z"
 
-let dates = { 
-    givenA : "2023-12-31T12:46:00.000Z",
-    givenB :"2023-12-31T13:06:00.000Z"
-}
+// let dates = { 
+//     givenA : "2023-12-31T12:46:00.000Z",
+//     givenB :"2023-12-31T13:06:00.000Z"
+// }
 
-let { givenA, givenB } = dates
+// let { givenA, givenB } = dates
 
-let timeOptions = timeOptionsFromDateRange(givenA, givenB);
-console.log(timeOptions);
-console.log(returnBestOption(timeOptions));
+// let timeOptions = timeOptionsFromDateRange(givenA, givenB);
+// console.log(timeOptions);
+// console.log(returnBestOption(timeOptions));
 
-let isDateWithinRange = (date, dateRange) => 
-    date >= dateRange.A && 
-    date <= dateRange.B ? 
-    true : false
+// let isDateWithinRange = (date, dateRange) => 
+//     date >= dateRange.A && 
+//     date <= dateRange.B ? 
+//     true : false
 
-let isDateRangeWithinRange = (dateRangeSubset, dateRangeSuperset) => 
-    isDateWithinRange( dateRangeSubset.A ,dateRangeSuperset) &&
-    isDateWithinRange( dateRangeSubset.B ,dateRangeSuperset) ?
-    true : false
+// let isDateRangeWithinRange = (dateRangeSubset, dateRangeSuperset) => 
+//     isDateWithinRange( dateRangeSubset.A ,dateRangeSuperset) &&
+//     isDateWithinRange( dateRangeSubset.B ,dateRangeSuperset) ?
+//     true : false
 
-let dateRange = {
-    A: new Date("2023-12-13T12:46:00.000Z"),
-    B: new Date("2023-12-31T12:46:00.000Z")
-}
+// let dateRange = {
+//     A: new Date("2023-12-13T12:46:00.000Z"),
+//     B: new Date("2023-12-31T12:46:00.000Z")
+// }
 
-let dateRangeB = {
-    A: new Date("2023-12-12T12:46:00.000Z"),
-    B: new Date("2023-12-27T12:46:00.000Z")
-}
+// let dateRangeB = {
+//     A: new Date("2023-12-12T12:46:00.000Z"),
+//     B: new Date("2023-12-27T12:46:00.000Z")
+// }
 
-console.log("Date Range Check: ", isDateWithinRange(new Date("2023-12-31T12:06:01.000Z"),dateRange))
-console.log("Date Range by Range Check: ", isDateRangeWithinRange(dateRangeB ,dateRange))
+// console.log("Date Range Check: ", isDateWithinRange(new Date("2023-12-31T12:06:01.000Z"),dateRange))
+// console.log("Date Range by Range Check: ", isDateRangeWithinRange(dateRangeB ,dateRange))
