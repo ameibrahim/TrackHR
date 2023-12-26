@@ -17,6 +17,8 @@
         LIMIT 3
     ";
 
+    // TODO: FIX SQL BUG, you cannot see tasks that you are subtasked in or cascading children ... 
+
     $result = mysqli_query($conn,$query);
 
     $tasks = mysqli_fetch_all($result,MYSQLI_ASSOC);

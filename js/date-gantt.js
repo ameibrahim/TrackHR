@@ -1,7 +1,4 @@
 let ganttContainer = document.querySelector(".gantt-container");
-// let gantt100;
-let gantt100 =
-{id: "21", task_id: "1sp9abszjlqdmlwo1", supertask_id: "3ijrdblb3lqdhcjx3", start_date: "2023-12-01T00:00:00.000Z", end_date: "2023-12-31T00:00:00.000Z"} 
 
 let backButtonList = [];
 
@@ -11,31 +8,59 @@ function goBack(){
         getTasks(backButtonList[backButtonList.length - 1]);
     }
 
-    console.log(backButtonList);
+    // console.log(backButtonList);
 }
 
 async function getTasks(supertaskID){
 
-    let creatorID = "abcdefghi"; // needs to be dynamic
+    let creatorID = "abcdefghi"; // TODO: needs to be dynamic, and not just the creatorID
     let params = `creatorId=${creatorID}&&supertaskId=${supertaskID}`;
-    
+
+    let gantt100;
+
     ganttContainer.innerHTML = ""
     try {
 
-        let result = await AJAXCall({
+        let tasks = await AJAXCall({
             phpFilePath : "include/gantt.tasks.fetch.php",
             rejectMessage: "Tasks Not Fetched",
             params,
             type : "fetch",
         });
 
-        if(result.length > 0){
+        if(supertaskID != 0){
+            let parentTask = await AJAXCall({
+                phpFilePath : "include/task.fetch.php",
+                rejectMessage: "Task Not Fetched",
+                params: `supertaskId=${supertaskID}`,
+                type : "fetch",
+            });
+
+            gantt100 = {
+                start_date: parentTask[0].start_date,
+                end_date: parentTask[0].end_date
+            }
+
+            let rowPlacement = calculateRowPlacement(parentTask[0], gantt100);
+            let divider = createDivider();
+            ganttContainer.appendChild(createGanttRow(parentTask[0], rowPlacement, "static"))
+            ganttContainer.appendChild(divider);
+
+            console.log(supertaskID, {
+                start_date: parentTask[0].start_date,
+                end_date: parentTask[0].end_date
+            })
+        }
+
+
+        if(tasks.length > 0){
+
+            if (supertaskID == "0") {
+                gantt100 = getSpanOfDatesFrom(tasks)
+            }
     
-            result.forEach( rowData => {
-
-                console.log(rowData);
-
-                let rowPlacement = calculateRowPlacement(rowData);
+            tasks.forEach( rowData => {
+                let rowPlacement = calculateRowPlacement(rowData, gantt100);
                 let divider = createDivider();
                 ganttContainer.appendChild(createGanttRow(rowData, rowPlacement))
                 ganttContainer.appendChild(divider);
@@ -50,7 +75,7 @@ async function getTasks(supertaskID){
 getTasks("0");
 backButtonList.push("0");
 
-function createGanttRow(rowData, rowPlacement){
+function createGanttRow(rowData, rowPlacement, type = "clickable"){
 
     let {
         rowTimeOptions, 
@@ -71,9 +96,21 @@ function createGanttRow(rowData, rowPlacement){
     ganttRow.style.left = left;
     ganttRow.setAttribute("data-complete",rowData.complete);
 
-    ganttRow.addEventListener("click", () => { 
-        getTasks(rowData.task_id); backButtonList.push(rowData.task_id);
-    })
+    let ganttBar = document.createElement("div");
+    ganttBar.className = "gantt-bar";
+    ganttBar.textContent = rowData.name;
+
+    if(type == "clickable"){
+        ganttRow.addEventListener("click", () => { 
+            getTasks(rowData.task_id); 
+            backButtonList.push(rowData.task_id);
+        })
+
+    }else{
+        //TODO: ...
+        ganttRow.style.cursor = "default";
+        ganttBar.style.borderStyle = "dashed";
+    }
 
     let ganttDates= document.createElement("div");
     ganttDates.className = "gantt-dates";
@@ -85,11 +122,6 @@ function createGanttRow(rowData, rowPlacement){
     let endDateElement = document.createElement("span");
     endDateElement.className = "end-date";
     endDateElement.textContent = `${endDate} ${endHour}`;
-
-
-    let ganttBar = document.createElement("div");
-    ganttBar.className = "gantt-bar";
-    ganttBar.textContent = rowData.name;
 
     let ganttProgress = document.createElement("span");
     ganttProgress.className = "progress";
@@ -174,24 +206,24 @@ let data = [
     }, 
 ]
 
-function calculateRowPlacement(rowData){
+function calculateRowPlacement(rowData, gantt100){
 
     let rowTimeOptions = timeOptionsFromDateRange(rowData.start_date, rowData.end_date);
     let PersonalMinutes = rowTimeOptions.minutes;
     let gantt100Minutes = timeOptionsFromDateRange(gantt100.start_date, gantt100.end_date).minutes;
     let startDifference = timeOptionsFromDateRange(gantt100.start_date, rowData.start_date).minutes;
 
-    console.log(gantt100Minutes)
-    console.log(PersonalMinutes)
-    console.log("std:", startDifference)
+    // console.log(gantt100Minutes)
+    // console.log(PersonalMinutes)
+    // console.log("std:", startDifference)
 
     let left = Math.floor(startDifference/gantt100Minutes * 100);
     let width = Math.ceil(PersonalMinutes/gantt100Minutes * 100);
 
-    console.log({
-        width: `${width}%`,
-        left: `${left}%`,
-    })
+    // console.log({
+    //     width: `${width}%`,
+    //     left: `${left}%`,
+    // })
 
 
     return {
@@ -231,7 +263,7 @@ function timeOptionsFromDateRange(start,end){
     let days = hours / 24 ;
     let weeks = days / 7;
 
-    console.log('start: ', start);
+    // console.log('start: ', start);
 
     // check if the date is in JSON format
     let [ _startDate, _startHour ] = startDate.toJSON().split("T");
@@ -331,3 +363,30 @@ function displayWDHM(timeOptions) {
 
 // console.log("Date Range Check: ", isDateWithinRange(new Date("2023-12-31T12:06:01.000Z"),dateRange))
 // console.log("Date Range by Range Check: ", isDateRangeWithinRange(dateRangeB ,dateRange))
+
+function getSpanOfDatesFrom(result){
+
+    let start_date = "2050-12-12T00:00:00.000Z";
+    let end_date = "1990-12-12T00:00:00.000Z";
+
+    result.forEach( object => {
+
+        if(object.start_date < start_date)
+            start_date = object.start_date
+
+        if(object.end_date > end_date)
+        end_date = object.end_date
+
+    });
+
+    // console.log("date logic: ",{
+    //     start_date,
+    //     end_date
+    // })
+
+    return {
+        start_date,
+        end_date
+    }
+
+}
