@@ -1,3 +1,8 @@
+<?php 
+    session_start();
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +11,7 @@
     <title>Projects and Tasks</title>
     <?php include 'components/major-imports.php'; ?>
 
-    <link rel="stylesheet" href="css/grid-table.css">
+    <script src="js/loadingTasks.js?1" defer></script>
 
 </head>
 <body>
@@ -17,10 +22,30 @@
 
         <?php include 'components/top-navigation.php'; ?>
 
-        <div class="center-content projects-center-content">
-            <ul class="project-container">
-                <h1 class="header-title">Projects and Tasks</h1>
-            </ul> 
+        <div class="center-content">
+
+            <h1 class="section-title">Projects and Tasks</h1>
+
+            <div class="slider">
+                <p class="grid-slider-total"></p>
+            </div>
+
+            <div class="extended-wrapper">
+
+                <div class="grid-table-section tasks-grid-table">
+                    <ul class="grid-header" data-title="header">
+                        <li>#</li>
+                        <li>Task Name</li>
+                        <li>Start Date</li>
+                        <li>End Date</li>
+                        <li>Status</li>
+                        <li>Options</li>
+                    </ul>
+
+                </div>
+
+                <div class="slide-to-scroll">scroll / slide → </div>
+            </div>
         </div>
     </div>
 

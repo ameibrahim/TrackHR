@@ -15,7 +15,7 @@
     $query = "
         SELECT user_id, username, email, role_title from users
         JOIN roles ON roles.role_id = users.role_id 
-        WHERE (username REGEXP '$givenInput' OR email REGEXP '$givenInput') AND users.role_id = '$searchingRoleID'
+        WHERE (username REGEXP '$givenInput' OR email REGEXP '$givenInput')
         ORDER BY username ASC
         LIMIT 3
     ";

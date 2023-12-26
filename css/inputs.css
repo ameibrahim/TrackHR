@@ -242,13 +242,14 @@
     z-index: 2;
 }
 
-.input-close-button {
+.input-close-button, .parent-release-button{
     right: 51px;
     background: transparent;
     display: none;
 }
 
-.input-close-button > .circular-badge {
+.input-close-button > .circular-badge, 
+.parent-release-button > .circular-badge {
     background: var(--error);
 }
 

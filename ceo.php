@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Managers</title>
+    <title>CEO</title>
     <?php include 'components/major-imports.php'; ?>
 
     <script src="js/loadingUsers.js?1"></script>
@@ -24,7 +24,7 @@
 
         <div class="center-content">
 
-            <h1 class="section-title">Managers</h1>
+            <h1 class="section-title">CEO</h1>
 
             <div class="slider">
                 <p class="grid-slider-total"></p>
@@ -54,7 +54,7 @@
 
     <script>
 
-        buildUsersLayout(2);
+        buildUsersLayout(1);
 
     </script>
     

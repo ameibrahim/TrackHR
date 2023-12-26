@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gantt</title>
+
+    <link rel="stylesheet" href="css/max-view.css?3">
+    <link rel="stylesheet" href="css/gantt.css?5">
+    <!-- <link rel="stylesheet" href="css/grid-table.css"> -->
+    <script src="js/date-gantt.js?2" defer></script>
+    <script src="js/fullscreenView.js" defer></script>
+
+    <link rel="stylesheet" href="css/font.css?1">
+    <link rel="stylesheet" href="css/root.css?3">
+    <link rel="stylesheet" href="css/dashboard.css?1">
+    <link rel="stylesheet" href="css/popup.css?7">
+    <link rel="stylesheet" href="css/inputs.css?3">
+    <link rel="stylesheet" href="css/grid-table.css?9">
+
+    <script src="js/functions.js?2"></script>
+    <script src="js/anime.min.js"></script>
+    <!-- <script src="js/index.js?3" defer></script> -->
+</head>
+<body>
+
+    <div class="side-nav"></div>
+
+    <div class="main-container">
+
+        <div class="center-content gantt-center-content">
+            <div class="max-view">
+                <h1 class="header-title">Gantt of Projects</h1>
+                <div class="view-icon" onclick="toggleCenterView()">
+                    <img class="icon full-screen-icon hover-enlarge" src="images/icons/fi-rr-expand.svg" alt="">
+                    <img class="icon min-screen-icon hover-enlarge" src="images/icons/fi-rr-compress.svg" alt="">
+                </div>
+            </div>
+
+            <ul class="gantt-container"></ul> 
+        </div>
+    </div>
+
+    <button onclick="animateOut()">Animate Out</button>
+    <button onclick="animateIn()">Animate In</button>
+
+    <script>
+
+        function animateOut(){
+
+            anime({
+                targets: '.gantt-row',
+                scale: 0,
+                delay: anime.stagger(100), // increase delay by 100ms for each elements.
+                // duration: 500,
+                easing: "spring(1, 50, 20, 0)"
+            });
+
+        }
+
+        function animateIn(){
+
+            anime({
+                targets: '.gantt-row',
+                scale: 1,
+                delay: anime.stagger(100),
+                // duration: 500,
+                easing: "spring(1, 70, 10, 0)"
+            });
+
+        }
+    </script>
+    
+</body>
+</html>

@@ -21,12 +21,9 @@
 
         <div class="popup-body">
             <form class="task-form add-project-form">
-                <div class="form-input-container user-search-container">
+                <div class="form-input-container parent-task-search-container">
                     <span class="form-input-label">Project Name</span>
                     <input class="form-input project-name-input" placeholder="Project Name" type="text" required>
-                    <!-- <span class="release-input-lock" onclick="releaseInputThenFocus(this)"></span> -->
-                    <!-- <div class="search-list-of-users">
-                    </div> -->
                 </div>
             
                 <div class="grid-two-columns">
@@ -47,7 +44,7 @@
                     <div class="in-type-input">
                         <input oninput="loadCollaborators(this)" class="form-input add-collaborator-input"
                         placeholder="Type a collaborator name" type="text" required>
-                        <div class="filter-list">
+                        <div class="collaborator filter-list">
                         </div>
                         <div class="input-close-button" onclick="clearCollaboratorsInput()">
                             <span class="circular-badge">

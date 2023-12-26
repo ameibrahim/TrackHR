@@ -19,7 +19,7 @@
 
         <?php
 
-            if ($roleID < 1) {
+            if ($roleID == 0) {
                 echo '
                     <a href="employees.php" class="navigation-row">
                         <span class="selected"></span>
@@ -27,10 +27,10 @@
                         <p class="navigation-row-name">Employees</p>
                     </a>
 
-                    <a href="managers.php" class="navigation-row">
+                    <a href="ceo.php" class="navigation-row">
                         <span class="selected"></span>
                         <img src="images/icons/fi-rr-people-arrows-left-right.svg" alt="" class="row-icon">
-                        <p class="navigation-row-name">Managers</p>
+                        <p class="navigation-row-name">CEO</p>
                     </a>
                 ';
             }
@@ -41,6 +41,13 @@
 
         if ($roleID < 2) {
             echo '
+
+                <a href="managers.php" class="navigation-row">
+                    <span class="selected"></span>
+                    <img src="images/icons/fi-rr-people-arrows-left-right.svg" alt="" class="row-icon">
+                    <p class="navigation-row-name">Managers</p>
+                </a>
+
                 <a href="supervisors.php" class="navigation-row">
                     <span class="selected"></span>
                     <img src="images/icons/fi-rr-people-poll.svg" alt="" class="row-icon">

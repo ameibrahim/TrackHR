@@ -1,6 +1,7 @@
 //TODO: Dependency Injection? [ NO ]
 let people = [];
 let addedCollaborators = [];
+let chosenParentTask;
 
 console.log("creatorID: ", userID);
 
@@ -15,7 +16,7 @@ async function loadCollaborators(element){
     let coreElement = element.parentElement.parentElement
     .parentElement.parentElement;
 
-    let collaboratorFilterListContainer = coreElement.querySelector(".filter-list");
+    let collaboratorFilterListContainer = coreElement.querySelector(".collaborator.filter-list");
     collaboratorFilterListContainer.innerHTML = "";
 
     let givenInput = element.value //TODO: Clean value using regexes, SQL Injection Issue
@@ -145,8 +146,8 @@ function addNewTask() {
     let projectDetails = { 
         taskId: uniqueID(),
         supertaskId: "0", 
-        startDate: valuesFromInputs.projectStartDate, 
-        endDate: valuesFromInputs.projectEndDate, 
+        startDate: new Date(valuesFromInputs.projectStartDate).toJSON(), 
+        endDate: new Date(valuesFromInputs.projectEndDate).toJSON(), 
         name: valuesFromInputs.projectName, 
         description: valuesFromInputs.projectDescription, 
         creatorId: userID  // globalUserID
@@ -172,8 +173,8 @@ function addNewSubTask() {
     let projectDetails = { 
         taskId: uniqueID(),
         supertaskId: valuesFromInputs.subtaskSupertaskID, 
-        startDate: valuesFromInputs.subtaskStartDate, 
-        endDate: valuesFromInputs.subtaskEndDate, 
+        startDate: new Date(valuesFromInputs.subtaskStartDate).toJSON(), 
+        endDate: new Date(valuesFromInputs.subtaskEndDate).toJSON(), 
         name: valuesFromInputs.subtaskName, 
         description: valuesFromInputs.subtaskDescription, 
         creatorId: userID  //TODO: Global user ID
@@ -212,6 +213,7 @@ async function processNewTaskRequest(taskConfig, coreElement){
                 hideTaskLoader(coreElement);
                 resetTaskForm(); // Make Modular
                 hideAddTaskForm();
+                hideAddSubtaskForm();
                 showToast(toastSuccessMessage);
             }, 3000);
         }
@@ -320,7 +322,7 @@ function collectValuesForAddingSubTask(){
     let addSubTaskForm = document.querySelector(".add-subtask-form");
 
     //TODO: Clean Values, SQL Injection Issues
-    let subtaskSupertaskID = addSubTaskForm.querySelector(".subtask-id-input").getAttribute("data-id");
+    let subtaskSupertaskID = chosenParentTask.task_id;
     let subtaskName = addSubTaskForm.querySelector(".subtask-name-input").value;
     let subtaskStartDate = addSubTaskForm.querySelector(".subtask-start-date").value;
     let subtaskEndDate = addSubTaskForm.querySelector(".subtask-end-date").value;
@@ -343,4 +345,64 @@ function uniqueID(){
     const base36 = number => (number).toString(36);
 
     return base36(dateReversed) + base36(date);
+}
+
+function fetchParentTasks(searchParam){
+
+    let params = `creatorId=${userID}&&searchParam=${searchParam}`
+
+    return AJAXCall({
+        phpFilePath : "include/parent.tasks.fetch.php",
+        rejectMessage: "Tasks not fetched",
+        params,
+        type : "fetch",
+    });
+
+}
+
+
+async function loadParentTasks(element){
+
+    let coreElement = element.parentElement.parentElement;
+
+    let parentTaskFilterListContainer = coreElement.querySelector(".parent-task.filter-list");
+    parentTaskFilterListContainer.innerHTML = "";
+
+    let givenInput = element.value //TODO: Clean value using regexes, SQL Injection Issue
+    let result = (givenInput != null) ? await fetchParentTasks(givenInput) : [] ;
+    parentTasks = result ?? [];
+
+    givenInput == "" || parentTasks.length == 0? 
+    parentTaskFilterListContainer.style.display = "none":
+    parentTaskFilterListContainer.style.display = "grid"; 
+
+
+    let filterItemElement = parentTasks.forEach( parentTask => {
+
+        let filterItem = document.createElement("div");
+        filterItem.className = "filter-item";
+        filterItem.addEventListener("click", () => {
+
+            setChosenParentTaskOnElement(element, parentTask)
+            hideParentTaskFilterList()
+
+        });
+        filterItem.textContent = parentTask.name;
+
+        parentTaskFilterListContainer.appendChild(filterItem);
+    }
+    );
+
+    function hideParentTaskFilterList(){
+        parentTaskFilterListContainer.style.display = "none";
+    }
+
+}
+
+function setChosenParentTaskOnElement(element, parentDetails){
+
+    let { name } = parentDetails;
+    element.value = name;
+
+    chosenParentTask = parentDetails
 }
