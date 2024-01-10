@@ -44,6 +44,28 @@
         
         <div class="center-content">
             <div class="quick-links"></div>
+            <div class="dashboard-box-container">
+                <a class="dashboard-box" href="managers.php">
+                    <div class="title">Managers</div>
+                    <div class="amount">2</div>
+                </a>
+                <a class="dashboard-box" href="supervisors.php">
+                    <div class="title">Supervisors</div>
+                    <div class="amount">3</div>
+                </a>
+                <a class="dashboard-box" href="workers.php">
+                    <div class="title">Workers</div>
+                    <div class="amount">3</div>
+                </a>
+                <a class="dashboard-box" href="tasks.php">
+                    <div class="title">Projects</div>
+                    <div class="amount">2</div>
+                </a>
+                <a class="dashboard-box" href="tasks.php">
+                    <div class="title">Tasks</div>
+                    <div class="amount">4</div>
+                </a>
+            </div>
             <div class="time-report-section"></div>
         </div>
     </div>

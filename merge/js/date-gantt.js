@@ -1,6 +1,6 @@
 class Gantt {
 
-    backButtonList = [];
+    backButtonList = []; // TODO: Remove
     userID = "";
     ganttContainer = "";
 
@@ -14,8 +14,8 @@ class Gantt {
         this.ganttContainer = document.querySelector(ganttContainerSelector);
         this.userID = userID;
 
-        this.getTasks("0");
-        this.backButtonList.push("0");
+        this.getTasks("0"); // TODO: Change to get Projects
+        this.backButtonList.push("0"); // Back button only neeeds to get to Projects
     }
 
     goBack(){
@@ -37,7 +37,7 @@ class Gantt {
         try {
     
             let tasks = await AJAXCall({
-                phpFilePath : "include/gantt.tasks.fetch.php",
+                phpFilePath : "include/gantt.tasks.fetch.php", // TODO: confirm
                 rejectMessage: "Tasks Not Fetched",
                 params,
                 type : "fetch",
@@ -68,7 +68,6 @@ class Gantt {
                     end_date: parentTask[0].end_date
                 })
             }
-    
     
             if(tasks.length > 0){
     
@@ -108,13 +107,11 @@ class Gantt {
 
         let completeness = "false";
 
-        if( rowData.completed == "true" ){
+        if( rowData.complete == "true" ){
             completeness = "true";
         }else if ( expired == "true" ){
             completeness = "overdeadline";
         }
-
-        if(progress > 100) progress = 100;
     
         let ganttRow = document.createElement("li");
         ganttRow.className = "gantt-row";
@@ -150,8 +147,7 @@ class Gantt {
     
         let ganttProgress = document.createElement("span");
         ganttProgress.className = "progress";
-        ganttProgress.style.left = progress + "%";
-        // if(progress > 100) ganttProgress.style.width = progress + "%";
+        ganttProgress.style.width = progress;
         ganttProgress.setAttribute("data-show", "true");
     
         let ganttBadge = document.createElement("span");
@@ -188,12 +184,6 @@ class Gantt {
         let left = Math.floor(startDifference/gantt100Minutes * 100);
         let width = Math.ceil(PersonalMinutes/gantt100Minutes * 100);
     
-        // console.log({
-        //     width: `${width}%`,
-        //     left: `${left}%`,
-        // })
-    
-    
         return {
             rowTimeOptions,
             width: `${width}%`,
@@ -213,9 +203,9 @@ class Gantt {
         let days = hours / 24 ;
         let weeks = days / 7;
 
-        let progress = Math.round((today - startDate) / (milliseconds) * 100);
-        let expired = progress > 100 ? "true" : "false";
-        console.log(`${startDate} -- ${endDate}`, "p: ", progress, "ex: ", expired);
+        const progress = Math.round((today - startDate) / (milliseconds) * 100) / 100;
+        const expired = progress > 100 ? "true" : "false";
+        console.log("p: ", progress, "ex: ", expired);
 
         let [ _startDate, _startHour ] = startDate.toJSON().split("T");
         let [ _endDate, _endHour ] = endDate.toJSON().split("T");
@@ -257,12 +247,7 @@ class Gantt {
             end_date = object.end_date
     
         });
-    
-        // console.log("date logic: ",{
-        //     start_date,
-        //     end_date
-        // })
-    
+
         return {
             start_date,
             end_date
@@ -271,85 +256,3 @@ class Gantt {
     }
 
 }
-
-let gantt = new Gantt({
-    ganttContainerSelector: ".gantt-container",
-    userID: "abcdefghi" //TODO: Needs to be dynamic
-});
-
-// Need a function that calculates how many minutes a date range 
-// is from its beginning to its ending point.
-
-function returnBestOption( timeoptions ){
-
-    let {
-        milliseconds,
-        seconds, 
-        minutes,
-        hours,
-        days,
-        weeks
-    } = timeOptions;
-
-    if( weeks >= 1 ) return { weeks }
-    if( days >= 1 ) return { days }
-    if( hours >= 1 ) return { hours }
-    if( minutes >= 1 ) return { minutes }
-    if( seconds >= 1 ) return { seconds }
-    return { milliseconds }
-
-}
-
-function displayWDHM(timeOptions) {
-
-    let { minutes } = returnBestOption(timeOptions)
-
-    // let weeksText = weeks != 1 ? "weeks" : "week"
-    // let daysText = days != 1 ? "days" : "day"
-    // let hoursText = weeks != 1 ? "hours" : "hour"
-    // let minutesText = minutes != 1 ? "minutes" : "minute"
-    // let millisecondsText = milliseconds != 1 ? "milliseconds" : "millisecond"
-
-    // if(weeks > 1) return `${weeks} ${weeksText}, ${days} ${daysText}, ${hours} ${hoursText}, ${minutes} ${minutesText}`
-    // if(days > 1) return `${days} ${daysText}, ${hours} ${hoursText}, ${minutes} ${minutesText}`
-    // if(hours > 1) return `${hours} ${hoursText}, ${minutes} ${minutesText}`
-    // if(minutes > 1) return `${minutes} ${minutesText}`
-    // return `${milliseconds} ${millisecondsText}`
-
-}
-
-// //Format We Are Using "2023-12-13T13:06:00.000Z"
-
-// let dates = { 
-//     givenA : "2023-12-31T12:46:00.000Z",
-//     givenB :"2023-12-31T13:06:00.000Z"
-// }
-
-// let { givenA, givenB } = dates
-
-// let timeOptions = timeOptionsFromDateRange(givenA, givenB);
-// console.log(timeOptions);
-// console.log(returnBestOption(timeOptions));
-
-// let isDateWithinRange = (date, dateRange) => 
-//     date >= dateRange.A && 
-//     date <= dateRange.B ? 
-//     true : false
-
-// let isDateRangeWithinRange = (dateRangeSubset, dateRangeSuperset) => 
-//     isDateWithinRange( dateRangeSubset.A ,dateRangeSuperset) &&
-//     isDateWithinRange( dateRangeSubset.B ,dateRangeSuperset) ?
-//     true : false
-
-// let dateRange = {
-//     A: new Date("2023-12-13T12:46:00.000Z"),
-//     B: new Date("2023-12-31T12:46:00.000Z")
-// }
-
-// let dateRangeB = {
-//     A: new Date("2023-12-12T12:46:00.000Z"),
-//     B: new Date("2023-12-27T12:46:00.000Z")
-// }
-
-// console.log("Date Range Check: ", isDateWithinRange(new Date("2023-12-31T12:06:01.000Z"),dateRange))
-// console.log("Date Range by Range Check: ", isDateRangeWithinRange(dateRangeB ,dateRange))

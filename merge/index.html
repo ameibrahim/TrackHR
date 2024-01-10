@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gantt</title>
+    <link rel="stylesheet" href="css/gantt.css?5">
+    <link rel="stylesheet" href="css/root.css?3">
+    <script src="js/functions.js?4"></script>
+    <script src="js/date-gantt.js?4"></script>
+</head>
+<body>
+    
+    <div class="gantt-outer-container">
+        <h1 class="header-title">Gantt of Projects</h1>
+        <div class="back-button" onclick="gantt.goBack()">back</div>
+        <ul class="gantt-container"></ul> 
+    </div>
+
+    <script>
+
+        let gantt = new Gantt({
+            ganttContainerSelector: ".gantt-container",
+            userID: "abcdefghi" //TODO: Needs to be dynamic
+        });
+
+    </script>
+    
+</body>
+</html>

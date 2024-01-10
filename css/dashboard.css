@@ -302,3 +302,27 @@ body{
     /* height: 3000px;
     background: #000; */
 }
+
+.dashboard-box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px;
+}
+
+.dashboard-box {
+    background-color: var(--pale-background);
+    color: var(--gray);
+    min-height: 250px;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;     
+    display: grid;
+    /* grid-template-columns:auto 1fr; */
+    padding: 20px;
+    font-size: 2em;
+}
+
+.dashboard-box > div {
+
+}
